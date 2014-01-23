@@ -17,7 +17,7 @@ public:
 		SVC_NUMS = 8192
 	};
 
-	typedef Obj_Pool<Svc, Null_Mutex> Svc_Pool;
+	typedef Obj_Pool<Svc> Svc_Pool;
 
 	Repo_Factory(void);
 	~Repo_Factory(void);

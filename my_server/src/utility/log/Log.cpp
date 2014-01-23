@@ -21,7 +21,8 @@ const uint32_t Log::backtrace_size = 256;
 const std::string Log::msg_lvl[] = {
 		"[LVL_ABORT] ",
 		"[LVL_ERROR] ",
-		"[LVL_DEBUG] "
+		"[LVL_DEBUG] ",
+		"[LVL_TRACE_ERROR] "
 };
 
 void Log::rec(const Level level, const char *fmt, ...) {

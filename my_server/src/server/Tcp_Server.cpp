@@ -15,66 +15,99 @@
 #include "Svc.h"
 #include "Msg_Block.h"
 
-Tcp_Server::Tcp_Server(void) : max_cid_(min_cid) {
+Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048) {
 
 }
 
 Tcp_Server::~Tcp_Server(void) {
 }
 
-void Tcp_Server::handle_input_event(void) {
+void Tcp_Server::accept_loop(void) {
 	while (1) {
-		reactor_->handle_event();
+		accept_reactor_->handle_event();
 	}
 }
 
-void Tcp_Server::accept_handle(Reactor *reactor, int sock_fd) {
+void Tcp_Server::recv_loop(void) {
+	while (1) {
+		input_reactor_->handle_event();
+	}
+}
+
+void Tcp_Server::accept_handle(int sock_fd) {
 	Svc *svc = repo_fac_->pop_svc();
 	svc->set_fd(sock_fd);
-	svc->set_reactor(reactor);
+	svc->set_reactor(input_reactor_.get());
 
 	using namespace std::placeholders;
 	svc->set_recv_cb(recv_cb_);
-	svc->set_close_cb(std::bind(&Tcp_Server::drop_handle, this, _1));
+	svc->set_close_cb(close_cb_);
 
-	int cid = generate_cid();
-	svc->set_cid(cid);
-	inused_[cid] = svc;
-	reactor->register_handler(svc, Event::READ_MASK);
+	cid_svc_map_.insert_obj(svc);
+	input_reactor_->register_handler(svc, Event::READ_MASK);
 }
 
-void Tcp_Server::drop_handle(int cid) {
-	Svc *svc = find_svc(cid);
+void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
+	Svc *svc = cid_svc_map_.find_obj(cid);
 	if (svc) {
-		unused_.insert(cid);
-		inused_.erase(cid);
-		repo_fac_->push_svc(svc);
-		if (close_cb_) {
-			close_cb_(cid);
-		}
-	} else {
-		rec_log(Log::LVL_ERROR, "svc cid %d not exist.", cid);
+		svc->push_send_msg(std::move(msg));
 	}
 }
 
-void Tcp_Server::init(int listen_port, int max_listen) {
+void Tcp_Server::drop_handle(int cid) {
+	Svc *svc = cid_svc_map_.find_obj(cid);
+	if (svc) {
+		svc->fini();
+		cid_svc_map_.erase_obj(cid);
+		repo_fac_->push_svc(svc);
+	}
+}
+
+void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb) {
 	// reactor
-	reactor_.reset(new Reactor);
-	reactor_->init();
+	accept_reactor_.reset(new Reactor);
+	accept_reactor_->init();
+	input_reactor_.reset(new Reactor);
+	input_reactor_->init();
 
 	// repo
 	repo_fac_.reset(new Repo_Factory);
 	repo_fac_->init();
 
 	// acceptor
-	acceptor_.reset(new Acceptor(reactor_.get()));
+	acceptor_.reset(new Acceptor(accept_reactor_.get()));
 	Sock_Acceptor *sock_acceptor = new Sock_Acceptor;
 	sock_acceptor->init(AF_INET, ACCEPT_SOCK_TYPE, 0, listen_port, max_listen);
 	using namespace std::placeholders;
-	acceptor_->init(sock_acceptor, std::bind(&Tcp_Server::accept_handle, this, _1, _2));
+	acceptor_->init(sock_acceptor, std::bind(&Tcp_Server::accept_handle, this, _1));
+
+	recv_cb_ = recv_cb;
+	close_cb_ = close_cb;
+
+	cid_svc_map_.set_obj_cb(sended_sum_);
 }
 
 void Tcp_Server::start(void) {
-	input_thr_ = std::thread(std::bind(&Tcp_Server::handle_input_event, this));
+	accept_thr_ = std::thread(std::bind(&Tcp_Server::accept_loop, this));
+	accept_thr_.detach();
+	input_thr_ = std::thread(std::bind(&Tcp_Server::recv_loop, this));
 	input_thr_.detach();
+	send_thr_ = std::thread(std::bind(&Tcp_Server::send_loop, this));
+	send_thr_.detach();
 }
+
+void Tcp_Server::send_loop(void) {
+	while (1) {
+		cid_svc_map_.foreach_cb();
+		if (0 == sended_sum_.sended_sum_) {
+			::usleep(100);
+		}
+	}
+}
+
+void Tcp_Server::Sended_Sum::operator()(Svc *svc) {
+	if (svc) {
+		svc->handle_output();
+	}
+}
+

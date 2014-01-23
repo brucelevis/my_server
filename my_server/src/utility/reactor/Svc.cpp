@@ -35,11 +35,9 @@ void Svc::handle_input(void) {
 }
 
 void Svc::handle_output(void) {
-	Msg_Block msg_block;
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	for (Msg_Block_Deque::iterator it = output_.begin(); it != output_.end(); ) {
-		int ret = msg_block.send_msg(send_func_, 0);
-		if (ret == SUCCESS) {
+		if (SUCCESS == (*it).send_msg(send_func_, 0)) {
 			it = output_.erase(it);
 		} else {
 			break;
@@ -48,9 +46,8 @@ void Svc::handle_output(void) {
 }
 
 void Svc::handle_close(void) {
-	rec_log(Log::LVL_DEBUG, "close");
+	// rec_log(Log::LVL_DEBUG, "close");
 	close_cb_(cid_);
-	fini();
 }
 
 int Svc::get_fd(void) const {
@@ -59,4 +56,9 @@ int Svc::get_fd(void) const {
 
 void Svc::set_fd(int fd) {
 	Sock_IO::set_fd(fd);
+}
+
+void Svc::push_send_msg(Msg_Block &&msg) {
+	Mutex_Guard<Thread_Mutex> guard(output_lock_);
+	output_.push_back(msg);
 }

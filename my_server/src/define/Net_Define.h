@@ -8,7 +8,7 @@
 #ifndef NET_DEFINE_H_
 #define NET_DEFINE_H_
 
-const uint32_t MAX_LISTEN = 256;
+const uint32_t MAX_LISTEN = 1024;
 
 const uint32_t MAX_SEND = 2048;
 const uint32_t MAX_RECV = 2048;

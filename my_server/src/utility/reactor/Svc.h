@@ -11,6 +11,7 @@
 #include "Event.h"
 #include "Sock_IO.h"
 #include "Thr_Mutex.h"
+#include "Thr_Mutex_Guard.h"
 
 class Msg_Block;
 class Svc : public Event, public Sock_IO {
@@ -26,6 +27,7 @@ public:
 	inline int get_cid(void);
 	inline void set_recv_cb(const Recv_Callback &cb);
 	inline void set_close_cb(const Close_Callback &cb);
+	void push_send_msg(Msg_Block &&msg);
 
 	virtual void handle_input(void) override;
 	virtual void handle_output(void) override;

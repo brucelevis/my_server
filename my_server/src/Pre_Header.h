@@ -44,6 +44,7 @@
 #include <netinet/in.h>
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/static_assert.hpp>
 
 #include "self_pre_header/Copy_Control.h"
 #include "self_pre_header/Define.h"

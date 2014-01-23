@@ -65,6 +65,8 @@ int Reactor::register_handler(Event *evh, int event_type) {
 		rec_errno_log();
 		return FAIL;
 	}
+
+	Mutex_Guard<Thread_Mutex> guard(lock_);
 	handlers_[fd] = evh;
 
 	return 0;
@@ -80,6 +82,8 @@ int Reactor::remove_handler(Event *evh) {
 	if ((ret = ::epoll_ctl(epfd_, EPOLL_CTL_DEL, fd, NULL)) == FAIL) {
 		rec_errno_log();
 	}
+
+	Mutex_Guard<Thread_Mutex> guard(lock_);
 	handlers_[fd] = nullptr;
 
 	return 0;
@@ -107,7 +111,7 @@ void Reactor::handle_event(void) {
 			evh->handle_output();
 		}
 		if (events_[i].events & EPOLLRDHUP) {	// 对端关闭
-			rec_log(Log::LVL_DEBUG, "EPOLLRDHUP");
+			// rec_log(Log::LVL_DEBUG, "EPOLLRDHUP");
 			evh->handle_close();
 		}
 		if (events_[i].events & EPOLLPRI) {	// 带外数据

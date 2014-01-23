@@ -27,7 +27,7 @@ void Acceptor::handle_input(void) {
 	while (1) {
 		int fd = sock_acceptor_->accept();
 		if (fd > 0) {
-			accept_cb_(get_reactor(), fd);
+			accept_cb_(fd);
 		} else {
 			break;
 		}
@@ -39,7 +39,7 @@ void Acceptor::handle_output(void) {
 }
 
 void Acceptor::handle_close(void) {
-	get_reactor()->remove_handler(this);
+
 }
 
 int Acceptor::get_fd(void) const {

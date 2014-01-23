@@ -16,26 +16,23 @@ Msg_Block::Msg_Block(size_t reserve_size, size_t content_size) : data_(reserve_s
 
 }
 
-int Msg_Block::recv_msg(const SendRecv_Func &func, int flags) {
+void Msg_Block::recv_msg(const SendRecv_Func &func, int flags) {
 	while (1) {
 		int recv_able = writable_bytes();
 		int recved = func(get_wptr(), recv_able, flags);
-		if (recved > 0) {	// nothing left to read
+		if (recved > 0) {
 			wptr_ += recved;
 			if (recved == recv_able) {
 				make_space(recved);
 				continue;
 			} else {
 				// recved less than recv_able
-				// be likely to no more bytes left to read
-				// in case of some bytes left, wait for next handle_input
 				break;
 			}
 		} else {
-			return FAIL;
+			break;
 		}
 	}
-	return SUCCESS;
 }
 
 int Msg_Block::send_msg(const SendRecv_Func &func, int flags) {

@@ -14,7 +14,7 @@
 class Sock_Acceptor;
 class Acceptor : public Event {
 public:
-	typedef std::function<void(Reactor*, int)> Accept_Callback;
+	typedef std::function<void(int)> Accept_Callback;
 
 	Acceptor(Reactor *reactor);
 	virtual ~Acceptor(void);

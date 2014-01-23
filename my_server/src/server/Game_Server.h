@@ -9,24 +9,38 @@
 #define GAME_SERVER_H_
 
 #include "Pre_Header.h"
+#include "Thr_Mutex.h"
 
 class Msg_Block;
 class Tcp_Server;
 class Game_Server {
 public:
+	enum {
+		OFFLINE = -2
+	};
+
 	typedef std::deque<Msg_Block> Msg_Block_Deque;
 	Game_Server(void);
 	~Game_Server(void);
 
+	void init(void);
+	void start(void);
+
 private:
-	// when msg_ deque is empty try to move input_ to it
-	Thread_Mutex input_lock_;
-	std::deque<Msg_Block> input_;
+	// main thread : msg handle loop
+	void msg_loop(void);
+	void push_msg(Msg_Block &&msg_block);
+	void close_handle(int cid);
+
+	void msg_handle(int cid, const Msg_Block &msg);
+
+private:
 	Thread_Mutex msg_lock_;
 	std::deque<Msg_Block> msg_;
 
 	// for client connect
 	boost::scoped_ptr<Tcp_Server> tcp_server_;
+	std::thread msg_thr_;
 };
 
 #endif /* GAME_SERVER_H_ */

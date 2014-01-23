@@ -10,6 +10,7 @@
 
 #include "Pre_Header.h"
 #include "Obj_Pool.h"
+#include "Cid_Obj_Map.h"
 
 class Reactor;
 class Svc;
@@ -21,62 +22,47 @@ class Tcp_Server {
 public:
 	typedef std::function<void(Msg_Block &&)> Recv_Callback;
 	typedef std::function<void(int)> Close_Callback;
+	typedef Cid_Obj_Map<Svc*> Cid_Svc_Map;
+
+	struct Sended_Sum {
+		Sended_Sum() { sended_sum_ = 0; }
+	    void operator()(Svc *svc);
+	    void reset(void) {
+	    	sended_sum_ = 0;
+	    }
+	    int sended_sum_;
+	};
 
 	Tcp_Server(void);
 	~Tcp_Server(void);
 
-	void init(int listen_port, int max_listen);
+	void init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb);
 	void start(void);
-	void set_recv_cb(const Recv_Callback &cb);
-	void set_close_cb(const Close_Callback &cb);
 
-private:
-	void handle_input_event(void);
-	void accept_handle(Reactor *reactor, int sock_fd);
+	void send_to_client(const int cid, Msg_Block &&msg);
 	void drop_handle(int cid);
 
-	inline Svc *find_svc(int cid);
-	int generate_cid(void);
+private:
+	void accept_loop(void);
+	void recv_loop(void);
+	void pack_loop(void);	// todo
+	void send_loop(void);
+
+	void accept_handle(int sock_fd);
 
 private:
 	Recv_Callback recv_cb_;
 	Close_Callback close_cb_;
 
-	boost::scoped_ptr<Reactor> reactor_;
+	boost::scoped_ptr<Reactor> accept_reactor_;
+	boost::scoped_ptr<Reactor> input_reactor_;
 	boost::scoped_ptr<Repo_Factory> repo_fac_;
 	boost::scoped_ptr<Acceptor> acceptor_;
+	std::thread accept_thr_;
 	std::thread input_thr_;
-
-	std::unordered_map<int, Svc*> inused_;
-	std::unordered_set<int> unused_;
-	int max_cid_;
+	std::thread send_thr_;
+	Cid_Svc_Map cid_svc_map_;
+	Sended_Sum sended_sum_;
 };
-
-void Tcp_Server::set_recv_cb(const Recv_Callback &cb) {
-	recv_cb_ = cb;
-}
-
-void Tcp_Server::set_close_cb(const Close_Callback &cb) {
-	close_cb_ = cb;
-}
-
-inline Svc *Tcp_Server::find_svc(int cid) {
-	auto it = inused_.find(cid);
-	if (it != inused_.end()) {
-		return it->second;
-	} else {
-		rec_log(Log::LVL_TRACE_ERROR, "can't find svc %d", cid);
-		return nullptr;
-	}
-}
-
-inline int Tcp_Server::generate_cid(void) {
-	if (!unused_.empty()) {
-		return *unused_.begin();
-	} else {
-		rec_log(Log::LVL_DEBUG, "max cid %d", max_cid_);
-		return max_cid_++;
-	}
-}
 
 #endif /* TCP_SERVER_H_ */

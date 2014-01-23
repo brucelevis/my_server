@@ -9,6 +9,7 @@
 #define REACTOR_H_
 
 #include "Pre_Header.h"
+#include "Thr_Mutex.h"
 
 class Event;
 class Reactor : private noncopyable {
@@ -33,6 +34,7 @@ private:
 	int epfd_;
 	Epoll_Events events_;
 	Event_Handlers handlers_;
+	Thread_Mutex lock_;
 };
 
 #endif /* REACTOR_H_ */

@@ -35,7 +35,7 @@ public:
 	~Msg_Block(void) = default;
 	friend void swap(Msg_Block &msg1, Msg_Block &msg2);
 
-	int recv_msg(const SendRecv_Func &func, int flags);
+	void recv_msg(const SendRecv_Func &func, int flags);
 	int send_msg(const SendRecv_Func &func, int flags);
 	inline void reset(void);
 	inline const char *get_rptr(void) const;
