@@ -32,7 +32,7 @@ void Game_Server::start(void) {
 void Game_Server::msg_loop(void) {
 	while (1) {
 		if (msg_.empty()) {
-			::usleep(100);
+			::usleep(100);	// todo remove it
 		} else {
 			Mutex_Guard<Thread_Mutex> guard(msg_lock_);
 			Msg_Block &msg = msg_.front();

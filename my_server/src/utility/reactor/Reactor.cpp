@@ -66,9 +66,7 @@ int Reactor::register_handler(Event *evh, int event_type) {
 		return FAIL;
 	}
 
-	Mutex_Guard<Thread_Mutex> guard(lock_);
 	handlers_[fd] = evh;
-
 	return 0;
 }
 
@@ -83,9 +81,7 @@ int Reactor::remove_handler(Event *evh) {
 		rec_errno_log();
 	}
 
-	Mutex_Guard<Thread_Mutex> guard(lock_);
 	handlers_[fd] = nullptr;
-
 	return 0;
 }
 
@@ -100,6 +96,7 @@ void Reactor::handle_event(void) {
 
 	for (int i = 0; i < nfds; ++i) {
 		Event *evh = handlers_[events_[i].data.fd];
+		bool close = false;
 		if (evh == nullptr) {
 			rec_log(Log::LVL_ERROR, "null evh");
 			continue;
@@ -111,18 +108,22 @@ void Reactor::handle_event(void) {
 			evh->handle_output();
 		}
 		if (events_[i].events & EPOLLRDHUP) {	// 对端关闭
-			// rec_log(Log::LVL_DEBUG, "EPOLLRDHUP");
-			evh->handle_close();
+			// rec_log(Log::LVL_DEBUG, "EPOLLRDHUP %d", evh->get_fd());
+			close = true;
 		}
 		if (events_[i].events & EPOLLPRI) {	// 带外数据
 			// ignore it
 		}
 		if (events_[i].events & EPOLLERR) {	// 对应的文件描述符发生错误
 			rec_log(Log::LVL_DEBUG, "EPOLLERR");
-			evh->handle_close();
+			close = true;
 		}
 		if (events_[i].events & EPOLLHUP) {	// 对应的文件描述符被挂断
 			rec_log(Log::LVL_DEBUG, "EPOLLHUP");
+			close = true;
+		}
+		if (close) {
+			remove_handler(evh);
 			evh->handle_close();
 		}
 	}

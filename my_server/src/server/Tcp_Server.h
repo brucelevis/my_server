@@ -22,11 +22,12 @@ class Tcp_Server {
 public:
 	typedef std::function<void(Msg_Block &&)> Recv_Callback;
 	typedef std::function<void(int)> Close_Callback;
-	typedef Cid_Obj_Map<Svc*> Cid_Svc_Map;
+	typedef std::shared_ptr<Svc> SSvc;
+	typedef Cid_Obj_Map<SSvc> Cid_Svc_Map;
 
 	struct Sended_Sum {
-		Sended_Sum() { sended_sum_ = 0; }
-	    void operator()(Svc *svc);
+		Sended_Sum(void) { sended_sum_ = 0; }
+	    void operator()(SSvc &svc);
 	    void reset(void) {
 	    	sended_sum_ = 0;
 	    }
@@ -47,6 +48,7 @@ private:
 	void recv_loop(void);
 	void pack_loop(void);	// todo
 	void send_loop(void);
+	void release_loop(void); // todo 资源释放线程
 
 	void accept_handle(int sock_fd);
 

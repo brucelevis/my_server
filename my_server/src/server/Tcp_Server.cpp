@@ -35,7 +35,7 @@ void Tcp_Server::recv_loop(void) {
 }
 
 void Tcp_Server::accept_handle(int sock_fd) {
-	Svc *svc = repo_fac_->pop_svc();
+	auto svc = std::make_shared<Svc>();
 	svc->set_fd(sock_fd);
 	svc->set_reactor(input_reactor_.get());
 
@@ -44,22 +44,23 @@ void Tcp_Server::accept_handle(int sock_fd) {
 	svc->set_close_cb(close_cb_);
 
 	cid_svc_map_.insert_obj(svc);
-	input_reactor_->register_handler(svc, Event::READ_MASK);
+	input_reactor_->register_handler(svc.get(), Event::READ_MASK);
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
-	Svc *svc = cid_svc_map_.find_obj(cid);
+	SSvc svc;
+	cid_svc_map_.find_obj(cid, svc);
 	if (svc) {
 		svc->push_send_msg(std::move(msg));
 	}
 }
 
 void Tcp_Server::drop_handle(int cid) {
-	Svc *svc = cid_svc_map_.find_obj(cid);
+	SSvc svc;
+	cid_svc_map_.find_obj(cid, svc);
 	if (svc) {
 		svc->fini();
 		cid_svc_map_.erase_obj(cid);
-		repo_fac_->push_svc(svc);
 	}
 }
 
@@ -100,12 +101,12 @@ void Tcp_Server::send_loop(void) {
 	while (1) {
 		cid_svc_map_.foreach_cb();
 		if (0 == sended_sum_.sended_sum_) {
-			::usleep(100);
+			::usleep(100);	// todo remove it
 		}
 	}
 }
 
-void Tcp_Server::Sended_Sum::operator()(Svc *svc) {
+void Tcp_Server::Sended_Sum::operator()(SSvc &svc) {
 	if (svc) {
 		svc->handle_output();
 	}
