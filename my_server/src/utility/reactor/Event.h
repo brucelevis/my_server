@@ -24,7 +24,7 @@ public:
 	};
 
 	virtual void handle_input(void) = 0;
-	virtual void handle_output(void) = 0;
+	virtual int handle_output(void) = 0;
 	virtual void handle_close(void) = 0;
 	virtual int get_fd(void) const = 0;
 	virtual void set_fd(int fd) = 0;

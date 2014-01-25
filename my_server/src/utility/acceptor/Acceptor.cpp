@@ -34,8 +34,8 @@ void Acceptor::handle_input(void) {
 	}
 }
 
-void Acceptor::handle_output(void) {
-
+int Acceptor::handle_output(void) {
+	return SUCCESS;
 }
 
 void Acceptor::handle_close(void) {

@@ -2,7 +2,8 @@ OUTPUT_DIR=./debug
 BUILD_DIR=./build
 
 CXX=ccache g++
-CXXFLAGS=-g -Wall -std=c++11 -Woverloaded-virtual
+DEFINE=
+CXXFLAGS=-g -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
 MKDIR=mkdir -p
 RM=rm -f
 RMDIR=rm -rf

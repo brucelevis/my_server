@@ -30,7 +30,7 @@ public:
 	void push_send_msg(Msg_Block &&msg);
 
 	virtual void handle_input(void) override;
-	virtual void handle_output(void) override;
+	virtual int handle_output(void) override;
 	virtual void handle_close(void) override;
 	virtual int get_fd(void) const override;
 	virtual void set_fd(int fd) override;

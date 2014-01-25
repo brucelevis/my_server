@@ -16,10 +16,10 @@ public:
 	Mutex_Guard(LOCK &l) : lock_(&l) { this->acquire();}
 	~Mutex_Guard(void) { this->release(); }
 
-	int acquire(void) { return lock_->acquire(); }
-	int release(void) { return lock_->release(); }
-	int acquire_read(void) { return lock_->acquire_read(); }
-	int acquire_write(void) { return lock_->acquire_write(); }
+	void acquire(void) { lock_->acquire(); }
+	void release(void) { lock_->release(); }
+	void acquire_read(void) { lock_->acquire_read(); }
+	void acquire_write(void) { lock_->acquire_write(); }
 private:
 	LOCK *lock_;
 };
@@ -30,8 +30,8 @@ public:
 	Read_Guard(LOCK &l) : lock_(&l) { acquire_read(); }
 	~Read_Guard(void) { this->release(); }
 
-	int release(void) { return lock_->release(); }
-	int acquire_read(void) { return lock_->acquire_read(); }
+	void release(void) { lock_->release(); }
+	void acquire_read(void) { lock_->acquire_read(); }
 private:
 	LOCK *lock_;
 };
@@ -42,8 +42,8 @@ public:
 	Write_Guard(LOCK &l): lock_(&l) { acquire_write(); }
 	~Write_Guard(void) { this->release(); }
 
-	int release(void) { return lock_->release(); }
-	int acquire_write(void) { return lock_->acquire_write(); }
+	void release(void) { lock_->release(); }
+	void acquire_write(void) { lock_->acquire_write(); }
 private:
 	LOCK *lock_;
 };

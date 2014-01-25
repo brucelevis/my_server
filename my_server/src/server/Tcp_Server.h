@@ -9,8 +9,8 @@
 #define TCP_SERVER_H_
 
 #include "Pre_Header.h"
-#include "Obj_Pool.h"
 #include "Cid_Obj_Map.h"
+#include "Condition.h"
 
 class Reactor;
 class Svc;
@@ -24,15 +24,6 @@ public:
 	typedef std::function<void(int)> Close_Callback;
 	typedef std::shared_ptr<Svc> SSvc;
 	typedef Cid_Obj_Map<SSvc> Cid_Svc_Map;
-
-	struct Sended_Sum {
-		Sended_Sum(void) { sended_sum_ = 0; }
-	    void operator()(SSvc &svc);
-	    void reset(void) {
-	    	sended_sum_ = 0;
-	    }
-	    int sended_sum_;
-	};
 
 	Tcp_Server(void);
 	~Tcp_Server(void);
@@ -51,6 +42,7 @@ private:
 	void release_loop(void); // todo 资源释放线程
 
 	void accept_handle(int sock_fd);
+	void send_handle(SSvc &svc);
 
 private:
 	Recv_Callback recv_cb_;
@@ -64,7 +56,10 @@ private:
 	std::thread input_thr_;
 	std::thread send_thr_;
 	Cid_Svc_Map cid_svc_map_;
-	Sended_Sum sended_sum_;
+
+	Thread_Mutex lock_;
+	Condition cond_;
+	std::unordered_set<int> busy_cid_;
 };
 
 #endif /* TCP_SERVER_H_ */

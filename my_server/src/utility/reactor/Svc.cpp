@@ -34,7 +34,7 @@ void Svc::handle_input(void) {
 	}
 }
 
-void Svc::handle_output(void) {
+int Svc::handle_output(void) {
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	for (Msg_Block_Deque::iterator it = output_.begin(); it != output_.end(); ) {
 		if (SUCCESS == (*it).send_msg(send_func_, 0)) {
@@ -42,6 +42,11 @@ void Svc::handle_output(void) {
 		} else {
 			break;
 		}
+	}
+	if (output_.empty()) {
+		return SUCCESS;
+	} else {
+		return FAIL;
 	}
 }
 

@@ -37,7 +37,7 @@ int Reactor::register_handler(Event *evh, int event_type) {
 
 	switch (event_type) {
 	case Event::READ_MASK:
-		ev.events |= EPOLLIN | EPOLLRDHUP;
+		ev.events |= EPOLLIN | EPOLLRDHUP | EPOLLET;
 		break;
 	case Event::WRITE_MASK:
 		ev.events |= EPOLLOUT;

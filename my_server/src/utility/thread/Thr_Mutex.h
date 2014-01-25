@@ -15,18 +15,10 @@ public:
 	Null_Mutex(void) { }
 	~Null_Mutex(void) { }
 
-	int acquire(void) {
-		return 0;
-	}
-	int release(void) {
-		return 0;
-	}
-	int acquire_read(void) {
-		return 0;
-	}
-	int acquire_write(void) {
-		return 0;
-	}
+	void acquire(void) {}
+	void release(void) {}
+	void acquire_read(void) {}
+	void acquire_write(void) {}
 };
 
 class Thread_Mutex : private noncopyable {
@@ -38,21 +30,27 @@ public:
 		::pthread_mutex_destroy(&lock_);
 	}
 
-	int acquire(void) {
-		return ::pthread_mutex_lock(&lock_);
+	void acquire(void) {
+		::pthread_mutex_lock(&lock_);
 	}
 
-	int release(void) {
-		return ::pthread_mutex_unlock(&lock_);
+	void release(void) {
+		::pthread_mutex_unlock(&lock_);
 	}
 
-	int acquire_read(void) {
-		return this->acquire();
+	void acquire_read(void) {
+		this->acquire();
 	}
 
-	int acquire_write(void) {
-		return this->acquire();
+	void acquire_write(void) {
+		this->acquire();
 	}
+
+	pthread_mutex_t* get(void)
+	{
+		return &lock_;
+	}
+
 private:
 	pthread_mutex_t lock_;
 };
@@ -67,20 +65,20 @@ public:
 		::pthread_rwlock_destroy(&lock_);
 	}
 
-	int acquire(void) {
-		return ::pthread_rwlock_wrlock(&lock_);
+	void acquire(void) {
+		::pthread_rwlock_wrlock(&lock_);
 	}
 
-	int release(void) {
-		return ::pthread_rwlock_unlock(&lock_);
+	void release(void) {
+		::pthread_rwlock_unlock(&lock_);
 	}
 
-	int acquire_read(void) {
-		return ::pthread_rwlock_rdlock(&lock_);
+	void acquire_read(void) {
+		::pthread_rwlock_rdlock(&lock_);
 	}
 
-	int acquire_write(void) {
-		return ::pthread_rwlock_wrlock(&lock_);
+	void acquire_write(void) {
+		::pthread_rwlock_wrlock(&lock_);
 	}
 private:
 	pthread_rwlock_t lock_;
@@ -99,20 +97,20 @@ public:
 		::pthread_mutexattr_destroy(&attr);
 	}
 
-	int acquire(void) {
-		return ::pthread_mutex_lock(&lock_);
+	void acquire(void) {
+		::pthread_mutex_lock(&lock_);
 	}
 
-	int release(void) {
-		return ::pthread_mutex_unlock(&lock_);
+	void release(void) {
+		::pthread_mutex_unlock(&lock_);
 	}
 
-	int acquire_read(void) {
-		return this->acquire();
+	void acquire_read(void) {
+		this->acquire();
 	}
 
-	int acquire_write(void) {
-		return this->acquire();
+	void acquire_write(void) {
+		this->acquire();
 	}
 private:
 	pthread_mutexattr_t attr;
@@ -129,20 +127,20 @@ public:
 		::pthread_spin_destroy(&lock_);
 	}
 
-	int acquire(void) {
-		return ::pthread_spin_lock(&lock_);
+	void acquire(void) {
+		::pthread_spin_lock(&lock_);
 	}
 
-	int release(void) {
-		return ::pthread_spin_unlock(&lock_);
+	void release(void) {
+		::pthread_spin_unlock(&lock_);
 	}
 
-	int acquire_read(void) {
-		return this->acquire();
+	void acquire_read(void) {
+		this->acquire();
 	}
 
-	int acquire_write(void) {
-		return this->acquire();
+	void acquire_write(void) {
+		this->acquire();
 	}
 private:
 	pthread_spinlock_t lock_;

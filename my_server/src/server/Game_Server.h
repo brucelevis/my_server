@@ -9,14 +9,14 @@
 #define GAME_SERVER_H_
 
 #include "Pre_Header.h"
-#include "Thr_Mutex.h"
+#include "Condition.h"
 
 class Msg_Block;
 class Tcp_Server;
 class Game_Server {
 public:
 	enum {
-		OFFLINE = -2
+		OFFLINE = -1
 	};
 
 	typedef std::deque<Msg_Block> Msg_Block_Deque;
@@ -36,6 +36,7 @@ private:
 
 private:
 	Thread_Mutex msg_lock_;
+	Condition msg_cond_;
 	std::deque<Msg_Block> msg_;
 
 	// for client connect

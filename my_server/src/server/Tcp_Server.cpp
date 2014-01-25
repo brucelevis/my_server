@@ -15,7 +15,7 @@
 #include "Svc.h"
 #include "Msg_Block.h"
 
-Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048) {
+Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048), cond_(lock_) {
 
 }
 
@@ -39,7 +39,6 @@ void Tcp_Server::accept_handle(int sock_fd) {
 	svc->set_fd(sock_fd);
 	svc->set_reactor(input_reactor_.get());
 
-	using namespace std::placeholders;
 	svc->set_recv_cb(recv_cb_);
 	svc->set_close_cb(close_cb_);
 
@@ -52,10 +51,17 @@ void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
 	cid_svc_map_.find_obj(cid, svc);
 	if (svc) {
 		svc->push_send_msg(std::move(msg));
+		Mutex_Guard<Thread_Mutex> guard(lock_);
+		busy_cid_.insert(cid);
+		cond_.notify();
 	}
 }
 
 void Tcp_Server::drop_handle(int cid) {
+	{
+		Mutex_Guard<Thread_Mutex> guard(lock_);
+		busy_cid_.erase(cid);
+	}
 	SSvc svc;
 	cid_svc_map_.find_obj(cid, svc);
 	if (svc) {
@@ -84,8 +90,6 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 
 	recv_cb_ = recv_cb;
 	close_cb_ = close_cb;
-
-	cid_svc_map_.set_obj_cb(sended_sum_);
 }
 
 void Tcp_Server::start(void) {
@@ -98,17 +102,25 @@ void Tcp_Server::start(void) {
 }
 
 void Tcp_Server::send_loop(void) {
+	SSvc svc;
 	while (1) {
-		cid_svc_map_.foreach_cb();
-		if (0 == sended_sum_.sended_sum_) {
-			::usleep(100);	// todo remove it
+		Mutex_Guard<Thread_Mutex> guard(lock_);
+		while (busy_cid_.empty()) {
+			cond_.wait();
+		}
+		for (auto it = busy_cid_.begin(); it != busy_cid_.end(); ) {
+			cid_svc_map_.find_obj(*it, svc);
+			bool need_delete = true;
+			if (svc) {
+				if (SUCCESS != svc->handle_output()) {
+					need_delete = false;
+				}
+			}
+			if (need_delete) {
+				it = busy_cid_.erase(it);
+			} else {
+				++it;
+			}
 		}
 	}
 }
-
-void Tcp_Server::Sended_Sum::operator()(SSvc &svc) {
-	if (svc) {
-		svc->handle_output();
-	}
-}
-

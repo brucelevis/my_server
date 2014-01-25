@@ -23,14 +23,14 @@ void test_msg_block(void) {
 		msg_block.write_uint32_tohead(11111);
 	}
 	for (int i = 0; i < 10; ++i) {
-		uint32_t value;
+		uint32_t value = 0;
 		msg_block.read_uint32(value);
 		rec_log(Log::LVL_DEBUG, "%d value : %d", i, value);
 	}
 
 	for (int i = 0; i < 10; ++i) {
 		std::string str;
-		uint32_t value;
+		uint32_t value = 0;
 		int remainder = i % 2;
 		if (0 == remainder) {
 			msg_block.read_uint32(value);

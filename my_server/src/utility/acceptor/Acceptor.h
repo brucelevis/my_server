@@ -22,7 +22,7 @@ public:
 	int init(Sock_Acceptor *sock_acceptor, const Accept_Callback &accept_cb);
 
 	virtual void handle_input(void) override;
-	virtual void handle_output(void) override;
+	virtual int handle_output(void) override;
 	virtual void handle_close(void) override;
 	virtual int get_fd(void) const override;
 	virtual void set_fd(int fd) override;

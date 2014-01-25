@@ -10,7 +10,7 @@
 #include "Tcp_Server.h"
 #include "Msg_Block.h"
 
-Game_Server::Game_Server(void) {
+Game_Server::Game_Server(void) : msg_cond_(msg_lock_) {
 }
 
 Game_Server::~Game_Server(void) {
@@ -31,12 +31,13 @@ void Game_Server::start(void) {
 
 void Game_Server::msg_loop(void) {
 	while (1) {
-		if (msg_.empty()) {
-			::usleep(100);	// todo remove it
-		} else {
-			Mutex_Guard<Thread_Mutex> guard(msg_lock_);
+		Mutex_Guard<Thread_Mutex> guard(msg_lock_);
+		while (msg_.empty()) {
+			msg_cond_.wait();
+		}
+		while (!msg_.empty()) {
 			Msg_Block &msg = msg_.front();
-			int cid;
+			int cid = 0;
 			msg.read_int32(cid);
 			msg_handle(cid, msg);
 			msg_.pop_front();
@@ -46,7 +47,7 @@ void Game_Server::msg_loop(void) {
 
 void Game_Server::msg_handle(int cid, const Msg_Block &msg) {
 	Msg_Block send_msg = msg;
-	int8_t value;
+	int8_t value = 0;
 	send_msg.peek_int8(value);
 	if (OFFLINE == value) {
 		tcp_server_->drop_handle(cid);
@@ -58,6 +59,7 @@ void Game_Server::msg_handle(int cid, const Msg_Block &msg) {
 void Game_Server::push_msg(Msg_Block &&msg_block) {
 	Mutex_Guard<Thread_Mutex> guard(msg_lock_);
 	msg_.push_back(msg_block);
+	msg_cond_.notify();
 }
 
 void Game_Server::close_handle(int cid) {

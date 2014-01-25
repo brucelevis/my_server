@@ -17,6 +17,8 @@
 #include <error.h>
 #include <time.h>
 #include <execinfo.h>
+#include <pthread.h>
+#include <assert.h>
 
 #include <string.h>
 #include <string>
