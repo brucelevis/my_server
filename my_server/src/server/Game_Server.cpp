@@ -37,7 +37,7 @@ void Game_Server::msg_loop(void) {
 		}
 		while (!msg_.empty()) {
 			Msg_Block &msg = msg_.front();
-			int cid = 0;
+			int cid;
 			msg.read_int32(cid);
 			msg_handle(cid, msg);
 			msg_.pop_front();

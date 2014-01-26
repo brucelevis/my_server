@@ -15,7 +15,7 @@
 #include "Svc.h"
 #include "Msg_Block.h"
 
-Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048), cond_(lock_) {
+Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048), cond_(lock_), busy_cid_(2048) {
 
 }
 
@@ -62,11 +62,9 @@ void Tcp_Server::drop_handle(int cid) {
 		Mutex_Guard<Thread_Mutex> guard(lock_);
 		busy_cid_.erase(cid);
 	}
-	SSvc svc;
-	cid_svc_map_.find_obj(cid, svc);
+	SSvc svc = cid_svc_map_.erase_obj(cid);
 	if (svc) {
 		svc->fini();
-		cid_svc_map_.erase_obj(cid);
 	}
 }
 
