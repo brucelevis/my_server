@@ -22,7 +22,7 @@ public:
 	~Cid_Obj_Map(void) = default;
 
 	inline void insert_obj(OBJ &obj);
-	inline void erase_obj(int cid);
+	inline OBJ erase_obj(int cid);
 	inline void find_obj(int cid, OBJ &obj);
 
 private:
@@ -45,15 +45,21 @@ inline void Cid_Obj_Map<OBJ, LOCK>::insert_obj(OBJ &obj) {
 }
 
 template <typename OBJ, typename LOCK>
-inline void Cid_Obj_Map<OBJ, LOCK>::erase_obj(int cid) {
+inline OBJ Cid_Obj_Map<OBJ, LOCK>::erase_obj(int cid) {
 	{
 		Guard guard(unused_lock_);
 		unused_.insert(cid);
 	}
+	OBJ obj;
 	{
 		Guard guard(inused_lock_);
-		inused_.erase(cid);
+		auto it = inused_.find(cid);
+		if (it != inused_.end()) {
+			obj.swap(it->second);
+			inused_.erase(it);
+		}
 	}
+	return obj;
 }
 
 template <typename OBJ, typename LOCK>
