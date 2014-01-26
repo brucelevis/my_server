@@ -1,0 +1,12 @@
+*.h.gch
+*.d
+*.o
+.gitignore~
+.metadata/
+RemoteSystemsTempFiles/
+.cproject
+.project
+.settings/
+callgrind.out.*
+debug/
+build/
