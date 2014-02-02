@@ -16,7 +16,6 @@
 #include "Msg_Block.h"
 
 Tcp_Server::Tcp_Server(void) {
-
 }
 
 Tcp_Server::~Tcp_Server(void) {
