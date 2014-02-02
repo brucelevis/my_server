@@ -65,8 +65,15 @@ void Svc::set_fd(int fd) {
 }
 
 void Svc::push_send_msg(Msg_Block &&msg) {
-	if (SUCCESS == msg.send_msg(send_func_, 0)) {
-		return;
+	bool empty = true;
+	{
+		Mutex_Guard<Thread_Mutex> guard(output_lock_);
+		empty = output_.empty();
+	}
+	if (empty) {
+		if (SUCCESS == msg.send_msg(send_func_, 0)) {
+			return;
+		}
 	}
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	output_.push_back(msg);

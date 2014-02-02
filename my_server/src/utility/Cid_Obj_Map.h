@@ -18,7 +18,7 @@ public:
 	typedef Mutex_Guard<LOCK> Guard;
 	typedef std::function<void(OBJ&)> Obj_Callback;
 
-	Cid_Obj_Map(int reserve) : inused_(reserve), max_cid_(nullcid) {};
+	Cid_Obj_Map(int nums) : inused_(nums), max_cid_(nullcid) {};
 	~Cid_Obj_Map(void) = default;
 
 	inline void insert_obj(OBJ &obj);

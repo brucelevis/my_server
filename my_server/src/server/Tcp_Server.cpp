@@ -48,21 +48,20 @@ void Tcp_Server::accept_handle(int sock_fd) {
 	svc->set_recv_cb(recv_cb_);
 	svc->set_close_cb(close_cb_);
 
-	cid_svc_map_.insert_obj(svc);
+	svc_holder_.insert_svc(svc);
 	input_reactor_->register_handler(svc, Event::READ_MASK);
 	output_reactor_->register_handler(svc, Event::WRITE_MASK);
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
-	SSvc svc;
-	cid_svc_map_.find_obj(cid, svc);
+	SSvc svc = svc_holder_.find_svc(cid);
 	if (svc) {
 		svc->push_send_msg(std::move(msg));
 	}
 }
 
 void Tcp_Server::drop_handle(int cid) {
-	cid_svc_map_.erase_obj(cid);
+	svc_holder_.erase_obj(cid);
 }
 
 void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb) {

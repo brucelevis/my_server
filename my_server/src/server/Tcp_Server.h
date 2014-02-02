@@ -10,6 +10,7 @@
 
 #include "Pre_Header.h"
 #include "Cid_Obj_Map.h"
+#include "Svc_Holder.h"
 #include "Condition.h"
 
 class Reactor;
@@ -25,6 +26,7 @@ public:
 	typedef std::shared_ptr<Svc> SSvc;
 	typedef std::weak_ptr<Svc> WSvc;
 	typedef Cid_Obj_Map<SSvc> Cid_Svc_Map;
+	typedef Svc_Holder<Thread_Mutex, 4096> SVC_HOLDER;
 
 	Tcp_Server(void);
 	~Tcp_Server(void);
@@ -58,6 +60,7 @@ private:
 	std::thread input_thr_;
 	std::thread output_thr_;
 	Cid_Svc_Map cid_svc_map_;
+	SVC_HOLDER svc_holder_;
 };
 
 #endif /* TCP_SERVER_H_ */
