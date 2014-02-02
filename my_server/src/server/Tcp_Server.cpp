@@ -15,7 +15,7 @@
 #include "Svc.h"
 #include "Msg_Block.h"
 
-Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048), cond_(lock_) {
+Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048) {
 
 }
 
@@ -34,6 +34,12 @@ void Tcp_Server::recv_loop(void) {
 	}
 }
 
+void Tcp_Server::send_loop(void) {
+	while (1) {
+		output_reactor_->handle_event();
+	}
+}
+
 void Tcp_Server::accept_handle(int sock_fd) {
 	auto svc = std::make_shared<Svc>();
 	svc->set_fd(sock_fd);
@@ -43,7 +49,8 @@ void Tcp_Server::accept_handle(int sock_fd) {
 	svc->set_close_cb(close_cb_);
 
 	cid_svc_map_.insert_obj(svc);
-	input_reactor_->register_handler(svc.get(), Event::READ_MASK);
+	input_reactor_->register_handler(svc, Event::READ_MASK);
+	output_reactor_->register_handler(svc, Event::WRITE_MASK);
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
@@ -51,21 +58,11 @@ void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
 	cid_svc_map_.find_obj(cid, svc);
 	if (svc) {
 		svc->push_send_msg(std::move(msg));
-		Mutex_Guard<Thread_Mutex> guard(lock_);
-		busy_cid_.insert(cid);
-		cond_.notify();
 	}
 }
 
 void Tcp_Server::drop_handle(int cid) {
-	{
-		Mutex_Guard<Thread_Mutex> guard(lock_);
-		busy_cid_.erase(cid);
-	}
-	SSvc svc = cid_svc_map_.erase_obj(cid);
-	if (svc) {
-		svc->fini();
-	}
+	cid_svc_map_.erase_obj(cid);
 }
 
 void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb) {
@@ -74,6 +71,9 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 	accept_reactor_->init();
 	input_reactor_.reset(new Reactor);
 	input_reactor_->init();
+	output_reactor_.reset(new Reactor);
+	output_reactor_->set_wait_ms(100);
+	output_reactor_->init();
 
 	// repo
 	repo_fac_.reset(new Repo_Factory);
@@ -95,30 +95,7 @@ void Tcp_Server::start(void) {
 	accept_thr_.detach();
 	input_thr_ = std::thread(std::bind(&Tcp_Server::recv_loop, this));
 	input_thr_.detach();
-	send_thr_ = std::thread(std::bind(&Tcp_Server::send_loop, this));
-	send_thr_.detach();
+	output_thr_ = std::thread(std::bind(&Tcp_Server::send_loop, this));
+	output_thr_.detach();
 }
 
-void Tcp_Server::send_loop(void) {
-	SSvc svc;
-	while (1) {
-		Mutex_Guard<Thread_Mutex> guard(lock_);
-		while (busy_cid_.empty()) {
-			cond_.wait();
-		}
-		for (auto it = busy_cid_.begin(); it != busy_cid_.end(); ) {
-			cid_svc_map_.find_obj(*it, svc);
-			bool need_delete = true;
-			if (svc) {
-				if (SUCCESS != svc->handle_output()) {
-					need_delete = false;
-				}
-			}
-			if (need_delete) {
-				it = busy_cid_.erase(it);
-			} else {
-				++it;
-			}
-		}
-	}
-}

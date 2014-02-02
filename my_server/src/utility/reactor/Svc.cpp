@@ -14,6 +14,7 @@ Svc::Svc(void) : cid_(nullcid) {
 }
 
 Svc::~Svc(void) {
+
 }
 
 void Svc::reset(void) {
@@ -51,7 +52,7 @@ int Svc::handle_output(void) {
 }
 
 void Svc::handle_close(void) {
-	// rec_log(Log::LVL_DEBUG, "close");
+	Sock::fini();
 	close_cb_(cid_);
 }
 
@@ -64,6 +65,9 @@ void Svc::set_fd(int fd) {
 }
 
 void Svc::push_send_msg(Msg_Block &&msg) {
+	if (SUCCESS == msg.send_msg(send_func_, 0)) {
+		return;
+	}
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	output_.push_back(msg);
 }

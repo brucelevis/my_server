@@ -20,7 +20,7 @@ Acceptor::~Acceptor(void) {
 int Acceptor::init(Sock_Acceptor *sock_acceptor, const Accept_Callback &accept_cb) {
 	sock_acceptor_.reset(sock_acceptor);
 	accept_cb_ = accept_cb;
-	return get_reactor()->register_handler(this, ACCEPT_MASK);
+	return get_reactor()->register_handler(shared_from_this(), ACCEPT_MASK);
 }
 
 void Acceptor::handle_input(void) {

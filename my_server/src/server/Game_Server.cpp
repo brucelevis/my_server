@@ -31,16 +31,19 @@ void Game_Server::start(void) {
 
 void Game_Server::msg_loop(void) {
 	while (1) {
-		Mutex_Guard<Thread_Mutex> guard(msg_lock_);
-		while (msg_.empty()) {
-			msg_cond_.wait();
-		}
-		while (!msg_.empty()) {
-			Msg_Block &msg = msg_.front();
+		while (!msg_handle_.empty()) {
+			Msg_Block &msg = msg_handle_.front();
 			int cid = 0;
 			msg.read_int32(cid);
 			msg_handle(cid, msg);
-			msg_.pop_front();
+			msg_handle_.pop_front();
+		}
+		{
+			Mutex_Guard<Thread_Mutex> guard(msg_lock_);
+			while (msg_cb_.empty()) {
+				msg_cond_.wait();
+			}
+			std::swap(msg_handle_, msg_cb_);
 		}
 	}
 }
@@ -58,7 +61,7 @@ void Game_Server::msg_handle(int cid, const Msg_Block &msg) {
 
 void Game_Server::push_msg(Msg_Block &&msg_block) {
 	Mutex_Guard<Thread_Mutex> guard(msg_lock_);
-	msg_.push_back(msg_block);
+	msg_cb_.push_back(msg_block);
 	msg_cond_.notify();
 }
 

@@ -36,6 +36,7 @@ public:
 	friend void swap(Msg_Block &msg1, Msg_Block &msg2);
 
 	void recv_msg(const SendRecv_Func &func, int flags);
+	// success mean all msg has been send fail mean some byte left
 	int send_msg(const SendRecv_Func &func, int flags);
 	inline void reset(void);
 	inline const char *get_rptr(void) const;

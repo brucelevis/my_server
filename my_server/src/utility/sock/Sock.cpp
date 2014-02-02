@@ -27,7 +27,9 @@ int Sock::fini(void) {
 	if (fd_ == nullfd) {
 		return FAIL;
 	}
-	return ::close(fd_);
+	::close(fd_);
+	fd_ = nullfd;
+	return SUCCESS;
 }
 
 int Sock::set_option(int level, int option, void *optval, socklen_t optlen) {

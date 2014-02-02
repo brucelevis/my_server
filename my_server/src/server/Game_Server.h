@@ -37,7 +37,8 @@ private:
 private:
 	Thread_Mutex msg_lock_;
 	Condition msg_cond_;
-	std::deque<Msg_Block> msg_;
+	std::deque<Msg_Block> msg_cb_;
+	std::deque<Msg_Block> msg_handle_;
 
 	// for client connect
 	boost::scoped_ptr<Tcp_Server> tcp_server_;

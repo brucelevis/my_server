@@ -12,7 +12,7 @@
 #include "Event.h"
 
 class Sock_Acceptor;
-class Acceptor : public Event {
+class Acceptor : public Event, public std::enable_shared_from_this<Acceptor> {
 public:
 	typedef std::function<void(int)> Accept_Callback;
 

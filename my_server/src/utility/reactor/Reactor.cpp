@@ -9,8 +9,8 @@
 #include "Log.h"
 #include "Event.h"
 
-Reactor::Reactor(void) : epfd_(nullfd) {
-	handlers_.fill(nullptr);
+Reactor::Reactor(void) : epfd_(nullfd), wait_ms_(-1) {
+
 }
 
 int Reactor::init(void) {
@@ -26,7 +26,7 @@ int Reactor::fini(void) {
 	return 0;
 }
 
-int Reactor::register_handler(Event *evh, int event_type) {
+int Reactor::register_handler(const SEvent &evh, int event_type) {
 	struct epoll_event ev;
 	memset(&ev, 0, sizeof(ev));
 	int fd = evh->get_fd();
@@ -66,11 +66,15 @@ int Reactor::register_handler(Event *evh, int event_type) {
 		return FAIL;
 	}
 
-	handlers_[fd] = evh;
+	{
+		Mutex_Guard<Thread_Mutex> guard(lock_);
+		handlers_[fd] = evh;
+	}
+
 	return 0;
 }
 
-int Reactor::remove_handler(Event *evh) {
+int Reactor::remove_handler(const SEvent &evh) {
 	int ret = 0;
 	int fd = evh->get_fd();
 	if (fd < 0 || fd >= MAX_EPOLL_EVENT) {
@@ -81,12 +85,13 @@ int Reactor::remove_handler(Event *evh) {
 		rec_errno_log();
 	}
 
-	handlers_[fd] = nullptr;
+	handlers_[fd].reset();
+
 	return 0;
 }
 
 void Reactor::handle_event(void) {
-	int nfds = ::epoll_wait(epfd_, events_.begin(), MAX_EPOLL_EVENT, -1);
+	int nfds = ::epoll_wait(epfd_, events_.begin(), MAX_EPOLL_EVENT, wait_ms_);
 	if (nfds == nullfd) {
 		if (errno != EINTR) {
 			rec_errno_log();
@@ -95,10 +100,11 @@ void Reactor::handle_event(void) {
 	}
 
 	for (int i = 0; i < nfds; ++i) {
-		Event *evh = handlers_[events_[i].data.fd];
+		Mutex_Guard<Thread_Mutex> guard(lock_);
+		SEvent evh = handlers_[events_[i].data.fd].lock();
 		bool close = false;
-		if (evh == nullptr) {
-			rec_log(Log::LVL_ERROR, "null evh");
+		if (!evh) {
+			rec_log(Log::LVL_DEBUG, "null evh %d", events_[i].data.fd);	// reactor持有的是weak_ptr，释放在主线程，可能出现空的情况。
 			continue;
 		}
 		if (events_[i].events & EPOLLIN) {	// 可读
@@ -108,18 +114,18 @@ void Reactor::handle_event(void) {
 			evh->handle_output();
 		}
 		if (events_[i].events & EPOLLRDHUP) {	// 对端关闭
-			// rec_log(Log::LVL_DEBUG, "EPOLLRDHUP %d", evh->get_fd());
+			rec_log(Log::LVL_DEBUG, "EPOLLRDHUP %d", evh->get_fd());
 			close = true;
 		}
 		if (events_[i].events & EPOLLPRI) {	// 带外数据
 			// ignore it
 		}
 		if (events_[i].events & EPOLLERR) {	// 对应的文件描述符发生错误
-			rec_log(Log::LVL_DEBUG, "EPOLLERR");
+			rec_log(Log::LVL_DEBUG, "EPOLLERR %d", evh->get_fd());
 			close = true;
 		}
 		if (events_[i].events & EPOLLHUP) {	// 对应的文件描述符被挂断
-			rec_log(Log::LVL_DEBUG, "EPOLLHUP");
+			rec_log(Log::LVL_DEBUG, "EPOLLHUP %d", evh->get_fd());
 			close = true;
 		}
 		if (close) {

@@ -43,7 +43,7 @@ void Log::rec_to_stdout(const int level, const char *fmt, va_list ap) {
 
 	std::stringstream msg_stream;
 	msg_stream << msg_lvl[level];
-	msg_stream << "<pid=" << (int)getpid() << "|tid=" << pthread_self()
+	msg_stream << "<pid=" << (int)getpid() << "|tid=" << std::this_thread::get_id()
 			<< "> (" << (tm_v.tm_hour) << ":" << (tm_v.tm_min) << ":" << (tm_v.tm_sec) << ") ";
 
 	char line_buf[max_buf_size];

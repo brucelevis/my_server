@@ -23,6 +23,7 @@ public:
 	typedef std::function<void(Msg_Block &&)> Recv_Callback;
 	typedef std::function<void(int)> Close_Callback;
 	typedef std::shared_ptr<Svc> SSvc;
+	typedef std::weak_ptr<Svc> WSvc;
 	typedef Cid_Obj_Map<SSvc> Cid_Svc_Map;
 
 	Tcp_Server(void);
@@ -37,8 +38,8 @@ public:
 private:
 	void accept_loop(void);
 	void recv_loop(void);
-	void pack_loop(void);	// todo
 	void send_loop(void);
+	void pack_loop(void);	// todo
 	void release_loop(void); // todo 资源释放线程
 
 	void accept_handle(int sock_fd);
@@ -50,16 +51,13 @@ private:
 
 	boost::scoped_ptr<Reactor> accept_reactor_;
 	boost::scoped_ptr<Reactor> input_reactor_;
+	boost::scoped_ptr<Reactor> output_reactor_;
 	boost::scoped_ptr<Repo_Factory> repo_fac_;
-	boost::scoped_ptr<Acceptor> acceptor_;
+	std::shared_ptr<Acceptor> acceptor_;
 	std::thread accept_thr_;
 	std::thread input_thr_;
-	std::thread send_thr_;
+	std::thread output_thr_;
 	Cid_Svc_Map cid_svc_map_;
-
-	Thread_Mutex lock_;
-	Condition cond_;
-	std::unordered_set<int> busy_cid_;
 };
 
 #endif /* TCP_SERVER_H_ */

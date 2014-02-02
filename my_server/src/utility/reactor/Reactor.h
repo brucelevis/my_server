@@ -19,22 +19,30 @@ public:
 	};
 
 	typedef std::array<epoll_event, MAX_EPOLL_EVENT> Epoll_Events;
-	typedef std::array<Event*, MAX_EPOLL_EVENT> Event_Handlers;
+	typedef std::shared_ptr<Event> SEvent;
+	typedef std::weak_ptr<Event> WEvent;
+	typedef std::array<WEvent, MAX_EPOLL_EVENT> Event_Handlers;
 
 	Reactor(void);
 	~Reactor(void) = default;
 
 	int init(void);
 	int fini(void);
-	int register_handler(Event *evh, int event_type);
-	int remove_handler(Event *evh);
+	int register_handler(const SEvent &evh, int event_type);
+	int remove_handler(const SEvent &evh);
 	void handle_event(void);
+	inline void set_wait_ms(int wait_ms);
 
 private:
 	int epfd_;
+	int wait_ms_;
 	Epoll_Events events_;
 	Event_Handlers handlers_;
 	Thread_Mutex lock_;
 };
+
+inline void Reactor::set_wait_ms(int wait_ms) {
+	wait_ms_ = wait_ms;
+}
 
 #endif /* REACTOR_H_ */
