@@ -40,7 +40,7 @@ int Reactor::register_handler(const SEvent &evh, int event_type) {
 		ev.events |= EPOLLIN | EPOLLRDHUP | EPOLLET;
 		break;
 	case Event::WRITE_MASK:
-		ev.events |= EPOLLOUT;
+		ev.events |= EPOLLOUT | EPOLLET;
 		break;
 	case Event::EXCEPT_MASK:
 		ev.events |= EPOLLPRI;
@@ -53,7 +53,7 @@ int Reactor::register_handler(const SEvent &evh, int event_type) {
 	case Event::TIMER_MASK:
 		break;
 	case Event::READ_WRITE_MASK:
-		ev.events |= EPOLLIN | EPOLLRDHUP | EPOLLOUT;
+		ev.events |= EPOLLIN | EPOLLRDHUP | EPOLLOUT | EPOLLET;
 		break;
 	default:
 		rec_log(Log::LVL_ERROR, "event_type : %d", event_type);
@@ -61,30 +61,35 @@ int Reactor::register_handler(const SEvent &evh, int event_type) {
 	}
 
 	ev.data.fd = fd;
-	if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &ev) == nullfd) {
-		rec_errno_log();
-		return FAIL;
-	}
-
 	{
-		Mutex_Guard<Thread_Mutex> guard(lock_);
+		Mutex_Guard<Thread_Mutex> guard(lock_array_[fd]);
+		if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &ev) == nullfd) {
+			rec_errno_log();
+			return FAIL;
+		}
 		handlers_[fd] = evh;
 	}
+	rec_log(Log::LVL_DEBUG, "register fd : %d", fd);
 
 	return 0;
 }
 
 int Reactor::remove_handler(const SEvent &evh) {
+	if (!evh) {
+		rec_log(Log::LVL_ERROR, "null evh");
+		return FAIL;
+	}
+
 	int ret = 0;
 	int fd = evh->get_fd();
 	if (fd < 0 || fd >= MAX_EPOLL_EVENT) {
 		rec_log(Log::LVL_ERROR, "fd size : %d", fd);
 		return FAIL;
 	}
+
 	if ((ret = ::epoll_ctl(epfd_, EPOLL_CTL_DEL, fd, NULL)) == FAIL) {
 		rec_errno_log();
 	}
-
 	handlers_[fd].reset();
 
 	return 0;
@@ -100,11 +105,12 @@ void Reactor::handle_event(void) {
 	}
 
 	for (int i = 0; i < nfds; ++i) {
-		Mutex_Guard<Thread_Mutex> guard(lock_);
-		SEvent evh = handlers_[events_[i].data.fd].lock();
+		int fd = events_[i].data.fd;
+		Mutex_Guard<Thread_Mutex> guard(lock_array_[fd]);
+		SEvent evh = handlers_[fd];
 		bool close = false;
 		if (!evh) {
-			rec_log(Log::LVL_DEBUG, "null evh %d", events_[i].data.fd);	// reactor持有的是weak_ptr，释放在主线程，可能出现空的情况。
+			rec_log(Log::LVL_ERROR, "null evh %d", events_[i].data.fd);
 			continue;
 		}
 		if (events_[i].events & EPOLLIN) {	// 可读
@@ -129,8 +135,8 @@ void Reactor::handle_event(void) {
 			close = true;
 		}
 		if (close) {
-			remove_handler(evh);
 			evh->handle_close();
+			remove_handler(evh);
 		}
 	}
 }

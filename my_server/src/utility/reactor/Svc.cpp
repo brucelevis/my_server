@@ -14,7 +14,7 @@ Svc::Svc(void) : cid_(nullcid) {
 }
 
 Svc::~Svc(void) {
-
+	Sock::fini();
 }
 
 void Svc::reset(void) {
@@ -52,7 +52,6 @@ int Svc::handle_output(void) {
 }
 
 void Svc::handle_close(void) {
-	Sock::fini();
 	close_cb_(cid_);
 }
 

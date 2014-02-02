@@ -15,7 +15,7 @@
 #include "Svc.h"
 #include "Msg_Block.h"
 
-Tcp_Server::Tcp_Server(void) : cid_svc_map_(2048) {
+Tcp_Server::Tcp_Server(void) {
 
 }
 
@@ -28,29 +28,22 @@ void Tcp_Server::accept_loop(void) {
 	}
 }
 
-void Tcp_Server::recv_loop(void) {
+void Tcp_Server::scream_loop(void) {
 	while (1) {
-		input_reactor_->handle_event();
-	}
-}
-
-void Tcp_Server::send_loop(void) {
-	while (1) {
-		output_reactor_->handle_event();
+		scream_reactor_->handle_event();
 	}
 }
 
 void Tcp_Server::accept_handle(int sock_fd) {
 	auto svc = std::make_shared<Svc>();
 	svc->set_fd(sock_fd);
-	svc->set_reactor(input_reactor_.get());
+	svc->set_reactor(scream_reactor_.get());
 
 	svc->set_recv_cb(recv_cb_);
 	svc->set_close_cb(close_cb_);
 
 	svc_holder_.insert_svc(svc);
-	input_reactor_->register_handler(svc, Event::READ_MASK);
-	output_reactor_->register_handler(svc, Event::WRITE_MASK);
+	scream_reactor_->register_handler(svc, Event::READ_WRITE_MASK);
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
@@ -68,11 +61,9 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 	// reactor
 	accept_reactor_.reset(new Reactor);
 	accept_reactor_->init();
-	input_reactor_.reset(new Reactor);
-	input_reactor_->init();
-	output_reactor_.reset(new Reactor);
-	output_reactor_->set_wait_ms(100);
-	output_reactor_->init();
+	scream_reactor_.reset(new Reactor);
+	// scream_reactor_->set_wait_ms(100);
+	scream_reactor_->init();
 
 	// repo
 	repo_fac_.reset(new Repo_Factory);
@@ -92,9 +83,7 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 void Tcp_Server::start(void) {
 	accept_thr_ = std::thread(std::bind(&Tcp_Server::accept_loop, this));
 	accept_thr_.detach();
-	input_thr_ = std::thread(std::bind(&Tcp_Server::recv_loop, this));
-	input_thr_.detach();
-	output_thr_ = std::thread(std::bind(&Tcp_Server::send_loop, this));
-	output_thr_.detach();
+	scream_thr_ = std::thread(std::bind(&Tcp_Server::scream_loop, this));
+	scream_thr_.detach();
 }
 

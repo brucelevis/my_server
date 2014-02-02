@@ -21,7 +21,7 @@ public:
 	typedef std::array<epoll_event, MAX_EPOLL_EVENT> Epoll_Events;
 	typedef std::shared_ptr<Event> SEvent;
 	typedef std::weak_ptr<Event> WEvent;
-	typedef std::array<WEvent, MAX_EPOLL_EVENT> Event_Handlers;
+	typedef std::array<SEvent, MAX_EPOLL_EVENT> Event_Handlers;
 
 	Reactor(void);
 	~Reactor(void) = default;
@@ -38,7 +38,7 @@ private:
 	int wait_ms_;
 	Epoll_Events events_;
 	Event_Handlers handlers_;
-	Thread_Mutex lock_;
+	std::array<Thread_Mutex, MAX_EPOLL_EVENT> lock_array_;
 };
 
 inline void Reactor::set_wait_ms(int wait_ms) {

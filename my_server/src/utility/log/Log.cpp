@@ -30,6 +30,12 @@ void Log::rec(const Level level, const char *fmt, ...) {
 		return;
 	}
 
+#ifndef LOCAL_DEBUG
+	if (level >= LVL_DEBUG) {
+		return;
+	}
+#endif
+
 	va_list	ap;
 	va_start(ap, fmt);
 	rec_to_stdout(level, fmt, ap);

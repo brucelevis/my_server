@@ -40,7 +40,7 @@ private:
 } while (0)
 
 inline void rec_errno_log(void) {
-	rec_log(Log::LVL_ERROR, strerror(errno));
+	rec_log(Log::LVL_ERROR, "%s", strerror(errno));
 }
 
 #endif /* LOG_H_ */

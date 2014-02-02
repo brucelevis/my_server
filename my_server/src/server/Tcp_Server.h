@@ -24,8 +24,6 @@ public:
 	typedef std::function<void(Msg_Block &&)> Recv_Callback;
 	typedef std::function<void(int)> Close_Callback;
 	typedef std::shared_ptr<Svc> SSvc;
-	typedef std::weak_ptr<Svc> WSvc;
-	typedef Cid_Obj_Map<SSvc> Cid_Svc_Map;
 	typedef Svc_Holder<Thread_Mutex, 4096> SVC_HOLDER;
 
 	Tcp_Server(void);
@@ -39,8 +37,7 @@ public:
 
 private:
 	void accept_loop(void);
-	void recv_loop(void);
-	void send_loop(void);
+	void scream_loop(void);
 	void pack_loop(void);	// todo
 	void release_loop(void); // todo 资源释放线程
 
@@ -52,14 +49,11 @@ private:
 	Close_Callback close_cb_;
 
 	boost::scoped_ptr<Reactor> accept_reactor_;
-	boost::scoped_ptr<Reactor> input_reactor_;
-	boost::scoped_ptr<Reactor> output_reactor_;
+	boost::scoped_ptr<Reactor> scream_reactor_;
 	boost::scoped_ptr<Repo_Factory> repo_fac_;
 	std::shared_ptr<Acceptor> acceptor_;
 	std::thread accept_thr_;
-	std::thread input_thr_;
-	std::thread output_thr_;
-	Cid_Svc_Map cid_svc_map_;
+	std::thread scream_thr_;
 	SVC_HOLDER svc_holder_;
 };
 

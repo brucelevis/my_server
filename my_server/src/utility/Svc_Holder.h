@@ -22,7 +22,7 @@ public:
 	~Svc_Holder(void) = default;
 
 	inline void insert_svc(const SSvc &svc);
-	inline void erase_obj(int cid);
+	inline SSvc erase_obj(int cid);
 	inline SSvc find_svc(int cid);
 private:
 	inline int generate_cid(void);
@@ -49,10 +49,11 @@ inline void Svc_Holder<LOCK, MAX_OBJ>::insert_svc(const SSvc &svc) {
 }
 
 template <typename LOCK, int MAX_OBJ>
-inline void Svc_Holder<LOCK, MAX_OBJ>::erase_obj(int cid) {
+inline SSvc Svc_Holder<LOCK, MAX_OBJ>::erase_obj(int cid) {
+	SSvc ret;
 	if (cid >= max_cid_) {
 		rec_log(Log::LVL_ERROR, "larger than max cid %d", max_cid_);
-		return;
+		return ret;
 	}
 	{
 		Guard guard(unused_lock_);
@@ -60,7 +61,8 @@ inline void Svc_Holder<LOCK, MAX_OBJ>::erase_obj(int cid) {
 	}
 	{
 		Guard guard(svc_lock_[cid]);
-		svc_[cid].reset();
+		ret.swap(svc_[cid]);
+		return ret;
 	}
 }
 
@@ -78,16 +80,17 @@ inline SSvc Svc_Holder<LOCK, MAX_OBJ>::find_svc(int cid) {
 
 template <typename LOCK, int MAX_OBJ>
 inline int Svc_Holder<LOCK, MAX_OBJ>::generate_cid(void) {
-	Guard guard(unused_lock_);
-	if (!unused_.empty()) {
-		int cid = *unused_.begin();
-		unused_.erase(unused_.begin());
-		return cid;
-	} else {
-		++current_max_cid_;
-		rec_log(Log::LVL_DEBUG, "max cid %d", current_max_cid_);
-		return current_max_cid_;
+	{
+		Guard guard(unused_lock_);
+		if (!unused_.empty()) {
+			int cid = *unused_.begin();
+			unused_.erase(unused_.begin());
+			return cid;
+		}
 	}
+	++current_max_cid_;
+	rec_log(Log::LVL_DEBUG, "max cid %d", current_max_cid_);
+	return current_max_cid_;
 }
 
 #endif /* SVC_HOLDER_H_ */
