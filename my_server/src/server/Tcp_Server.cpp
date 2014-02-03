@@ -14,6 +14,8 @@
 #include "Log.h"
 #include "Svc.h"
 #include "Msg_Block.h"
+#include "Nonblock_Worker.h"
+#include "Block_Worker.h"
 
 Tcp_Server::Tcp_Server(void) {
 }
@@ -28,7 +30,10 @@ void Tcp_Server::accept_loop(void) {
 }
 
 void Tcp_Server::scream_loop(void) {
+	scream_worker_->set_loop_thrid();
+	scream_reactor_->set_wait_ms(10);
 	while (1) {
+		scream_worker_->process();
 		scream_reactor_->handle_event();
 	}
 }
@@ -41,8 +46,10 @@ void Tcp_Server::accept_handle(int sock_fd) {
 	svc->set_recv_cb(recv_cb_);
 	svc->set_close_cb(close_cb_);
 
-	svc_holder_.insert_svc(svc);
-	scream_reactor_->register_handler(svc, Event::READ_WRITE_MASK);
+	scream_worker_->push([svc, this] {
+		svc_holder_.insert_svc(svc);
+		scream_reactor_->register_handler(svc, Event::READ_WRITE_MASK);
+	});
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
@@ -61,12 +68,7 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 	accept_reactor_.reset(new Reactor);
 	accept_reactor_->init();
 	scream_reactor_.reset(new Reactor);
-	// scream_reactor_->set_wait_ms(100);
 	scream_reactor_->init();
-
-	// repo
-	repo_fac_.reset(new Repo_Factory);
-	repo_fac_->init();
 
 	// acceptor
 	acceptor_.reset(new Acceptor(accept_reactor_.get()));
@@ -74,6 +76,9 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 	sock_acceptor->init(AF_INET, ACCEPT_SOCK_TYPE, 0, listen_port, max_listen);
 	using namespace std::placeholders;
 	acceptor_->init(sock_acceptor, std::bind(&Tcp_Server::accept_handle, this, _1));
+
+	// worker
+	scream_worker_.reset(new Nonblock_Worker);
 
 	recv_cb_ = recv_cb;
 	close_cb_ = close_cb;

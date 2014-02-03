@@ -9,7 +9,6 @@
 #define REACTOR_H_
 
 #include "Pre_Header.h"
-#include "Thr_Mutex.h"
 
 class Event;
 class Reactor : private noncopyable {
@@ -22,6 +21,8 @@ public:
 	typedef std::shared_ptr<Event> SEvent;
 	typedef std::weak_ptr<Event> WEvent;
 	typedef std::array<SEvent, MAX_EPOLL_EVENT> Event_Handlers;
+	typedef std::function<void()> Functor;
+	typedef std::deque<Functor> Functor_Deque;
 
 	Reactor(void);
 	~Reactor(void) = default;
@@ -30,6 +31,7 @@ public:
 	int fini(void);
 	int register_handler(const SEvent &evh, int event_type);
 	int remove_handler(const SEvent &evh);
+
 	void handle_event(void);
 	inline void set_wait_ms(int wait_ms);
 
@@ -38,7 +40,6 @@ private:
 	int wait_ms_;
 	Epoll_Events events_;
 	Event_Handlers handlers_;
-	std::array<Thread_Mutex, MAX_EPOLL_EVENT> lock_array_;
 };
 
 inline void Reactor::set_wait_ms(int wait_ms) {

@@ -10,4 +10,3 @@ RemoteSystemsTempFiles/
 callgrind.out.*
 debug/
 build/
-/my_server

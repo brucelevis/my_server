@@ -61,14 +61,11 @@ int Reactor::register_handler(const SEvent &evh, int event_type) {
 	}
 
 	ev.data.fd = fd;
-	{
-		Mutex_Guard<Thread_Mutex> guard(lock_array_[fd]);
-		if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &ev) == nullfd) {
-			rec_errno_log();
-			return FAIL;
-		}
-		handlers_[fd] = evh;
+	if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &ev) == nullfd) {
+		rec_errno_log();
+		return FAIL;
 	}
+	handlers_[fd] = evh;
 	rec_log(Log::LVL_DEBUG, "register fd : %d", fd);
 
 	return 0;
@@ -106,8 +103,7 @@ void Reactor::handle_event(void) {
 
 	for (int i = 0; i < nfds; ++i) {
 		int fd = events_[i].data.fd;
-		Mutex_Guard<Thread_Mutex> guard(lock_array_[fd]);
-		SEvent evh = handlers_[fd];
+		const SEvent &evh = handlers_[fd];
 		bool close = false;
 		if (!evh) {
 			rec_log(Log::LVL_ERROR, "null evh %d", events_[i].data.fd);

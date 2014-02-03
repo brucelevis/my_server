@@ -19,6 +19,8 @@ class Repo_Factory;
 class Acceptor;
 class Thread;
 class Msg_Block;
+class Block_Worker;
+class Nonblock_Worker;
 class Tcp_Server {
 public:
 	typedef std::function<void(Msg_Block &&)> Recv_Callback;
@@ -50,7 +52,7 @@ private:
 
 	boost::scoped_ptr<Reactor> accept_reactor_;
 	boost::scoped_ptr<Reactor> scream_reactor_;
-	boost::scoped_ptr<Repo_Factory> repo_fac_;
+	boost::scoped_ptr<Nonblock_Worker> scream_worker_;
 	std::shared_ptr<Acceptor> acceptor_;
 	std::thread accept_thr_;
 	std::thread scream_thr_;
