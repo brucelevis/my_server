@@ -16,6 +16,7 @@
 #define MSG_BLOCK_H_
 
 #include "Pre_Header.h"
+#include "Define.h"
 #include "Log.h"
 
 const uint32_t DEFAULT_RESERVE = 16;
@@ -81,8 +82,9 @@ public:
 
 	inline int read_string(std::string &v);
 	inline void write_string(const std::string &v);
+	inline int peek_string(std::string &v) const;
 
-	inline void log_contain(void);
+	inline void log_contain(void) const;
 private:
 	inline bool is_readable(size_t len) const;
 	inline void ensure_writeheadable(size_t len);
@@ -307,7 +309,7 @@ inline void Msg_Block::write_double(double v) {
 }
 
 inline void Msg_Block::write_string(const std::string &v) {
-	str_len_type len = v.length();
+	str_len_type len = static_cast<str_len_type>(v.length());
 	size_t total_len = sizeof(len) + len;
 	ensure_writeable(total_len);
 	write(len);
@@ -355,16 +357,31 @@ inline int Msg_Block::peek_double(double &v) const {
 	return peek(v);
 }
 
-inline void Msg_Block::log_contain(void) {
-	rec_log(Log::LVL_DEBUG, "read ptr : %d | write ptr : %d", rptr_, wptr_);
+inline int Msg_Block::peek_string(std::string &v) const {
+	v.clear();
+	str_len_type len = 0;
+	int ret = peek(len);
+	if (SUCCESS == ret) {
+		if (is_readable(len)) {
+			v.resize(len);
+			memcpy(static_cast<void*>(const_cast<char*>(v.c_str())), get_rptr() + sizeof(len), len);
+		} else {
+			ret = FAIL;
+		}
+	}
+	return ret;
+}
+
+inline void Msg_Block::log_contain(void) const {
+	rec_log(Log::LVL_INFO, "read ptr : %d | write ptr : %d", rptr_, wptr_);
 	const size_t buff_size = 2048;
 	char contain[buff_size + 1] = {0};
-	uint32_t size = std::min(buff_size / 2, readable_bytes());
-	for (uint32_t i = 0; i < size; ++i) {
-		uint32_t offset = 2 * i;
+	size_t size = std::min(buff_size / 2, readable_bytes());
+	for (size_t i = 0; i < size; ++i) {
+		size_t offset = 2 * i;
 		snprintf(contain + offset, buff_size - offset, "%02x", static_cast<unsigned char>(data_[i + rptr_]));
 	}
-	rec_log(Log::LVL_DEBUG, "contain : %s", contain);
+	rec_log(Log::LVL_INFO, "contain : %s", contain);
 }
 
 #endif /* MSG_BLOCK_H_ */

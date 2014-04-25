@@ -9,6 +9,7 @@
 #ifndef PRE_HEADER_H_
 #define PRE_HEADER_H_
 
+// c and system header
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -19,7 +20,17 @@
 #include <execinfo.h>
 #include <pthread.h>
 #include <assert.h>
+#include <unistd.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/epoll.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
 
+// c++ header
 #include <string.h>
 #include <string>
 #include <iterator>
@@ -37,18 +48,8 @@
 #include <mutex>
 #include <thread>
 
-#include <unistd.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/epoll.h>
-#include <netinet/in.h>
-
+// boost
 #include <boost/scoped_ptr.hpp>
 #include <boost/static_assert.hpp>
-
-#include "self_pre_header/Copy_Control.h"
-#include "self_pre_header/Define.h"
 
 #endif /* PRE_HEADER_H_ */

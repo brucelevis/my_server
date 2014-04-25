@@ -34,6 +34,9 @@ private:
 
 	void msg_handle(int cid, const Msg_Block &msg);
 
+	// test through out and delay on without msg handle deque
+	void test_direct_echo(Msg_Block &&msg_block);
+
 private:
 	Thread_Mutex msg_lock_;
 	Condition msg_cond_;

@@ -9,6 +9,7 @@
 #define SVC_HOLDER_H_
 
 #include "Pre_Header.h"
+#include "Define.h"
 #include "Thr_Mutex.h"
 #include "Log.h"
 #include "Svc.h"
