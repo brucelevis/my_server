@@ -10,6 +10,7 @@
 
 #include "Pre_Header.h"
 #include "Copy_Control.h"
+#include "Define.h"
 
 class Reactor;
 class Event : private noncopyable {
@@ -30,6 +31,10 @@ public:
 	virtual int get_fd(void) const = 0;
 	virtual void set_fd(int fd) = 0;
 
+	inline void reset(void);
+	inline int get_cid(void) const;
+	inline void set_cid(int fd);
+
 	inline Reactor *get_reactor(void) const;
 	inline void set_reactor(Reactor * const reactor);
 
@@ -38,6 +43,7 @@ protected:
 	virtual ~Event(void) = default;
 
 private:
+	int cid_;
 	Reactor* reactor_;
 };
 
@@ -47,6 +53,19 @@ inline Reactor *Event::get_reactor(void) const {
 
 inline void Event::set_reactor(Reactor * const reactor) {
 	reactor_ = reactor;
+}
+
+inline void Event::reset(void) {
+	cid_ = nullcid;
+	reactor_ = nullptr;
+}
+
+inline void Event::set_cid(int cid) {
+	cid_ = cid;
+}
+
+inline int Event::get_cid(void) const {
+	return cid_;
 }
 
 #endif /* EVENT_HANDLER_H_ */

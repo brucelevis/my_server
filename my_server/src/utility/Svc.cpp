@@ -10,7 +10,7 @@
 #include "Net_Define.h"
 #include "Msg_Block.h"
 
-Svc::Svc(void) : cid_(nullcid) {
+Svc::Svc(void) {
 }
 
 Svc::~Svc(void) {
@@ -18,9 +18,9 @@ Svc::~Svc(void) {
 }
 
 void Svc::reset(void) {
+	Event::reset();
 	Sock::fini();
 	IPC_SAP::set_fd(nullfd);
-	cid_ = nullcid;
 	recv_cb_ = nullptr;
 	close_cb_ = nullptr;
 	output_.clear();
@@ -30,9 +30,7 @@ void Svc::handle_input(void) {
 	Msg_Block msg_block;
 	msg_block.recv_msg(recv_func_, 0);
 	if (msg_block.readable_bytes() > 0) {
-		if (cid_ != nullcid) {	// 只有一个svc时，不需cid来区分
-			msg_block.write_uint32_tohead(cid_);
-		}
+		msg_block.write_uint32_tohead(get_cid());
 		recv_cb_(std::move(msg_block));
 	}
 }
@@ -54,7 +52,7 @@ int Svc::handle_output(void) {
 }
 
 void Svc::handle_close(void) {
-	close_cb_(cid_);
+	close_cb_(get_cid());
 }
 
 int Svc::get_fd(void) const {

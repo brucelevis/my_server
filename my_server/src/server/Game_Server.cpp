@@ -52,9 +52,6 @@ void Game_Server::msg_handle(int cid, const Msg_Block &msg) {
 	Msg_Block send_msg = msg;
 	int8_t value = 0;
 	send_msg.peek_int8(value);
-	std::string str;
-	send_msg.peek_string(str);
-	rec_log(Log::LVL_INFO, "read from client %s", str.c_str());
 	if (OFFLINE == value) {
 		tcp_server_->drop_handle(cid);
 	} else {
@@ -69,6 +66,7 @@ void Game_Server::push_msg(Msg_Block &&msg_block) {
 }
 
 void Game_Server::close_handle(int cid) {
+	rec_log(Log::LVL_DEBUG, "cid %d drop handle", cid);
 	Msg_Block msg;
 	msg.write_int32(cid);
 	msg.write_int8(OFFLINE);

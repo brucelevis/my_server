@@ -31,9 +31,12 @@ void Client::start(void) {
 }
 
 void Client::recv_handle(const Msg_Block &msg) {
+	Msg_Block ret_msg = msg;
+	uint32_t cid;
+	ret_msg.read_uint32(cid);
 	std::string line;
-	msg.peek_string(line);
-	rec_log(Log::LVL_INFO, "ret from server %s", line.c_str());
+	ret_msg.peek_string(line);
+	rec_log(Log::LVL_INFO, "ret from server %d : %s", cid, line.c_str());
 }
 
 void Client::close_handle(int cid) {

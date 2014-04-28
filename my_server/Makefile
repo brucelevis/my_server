@@ -3,6 +3,7 @@ OUTPUT_DIR:=$(CUR_DIR)/debug
 BUILD_DIR:=$(CUR_DIR)/build
 
 CXX:=ccache g++
+#DEFINE:=-DLOCAL_DEBUG
 DEFINE:=
 CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
 LDFLAGS+=-lpthread

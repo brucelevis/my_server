@@ -32,10 +32,11 @@ int Tcp_Client::init(const std::string &ip, const int port, const Recv_Callback&
 		ret = sock_->enable(Sock::NONBLOCK);
 		if (SUCCESS == ret) {
 			svc_->set_fd(sock_->get_fd());
-			scream_reactor_->init(10);
+			scream_reactor_->init(1);
 			svc_->set_reactor(scream_reactor_.get());
 			svc_->set_recv_cb(recv_cb);
 			svc_->set_close_cb(close_cb);
+			svc_->set_cid(0);
 			scream_reactor_->register_handler(svc_, Event::READ_WRITE_MASK);
 		}
 	}

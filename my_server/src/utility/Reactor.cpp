@@ -36,9 +36,9 @@ int Reactor::fini(void) {
 int Reactor::register_handler(const SEvent &evh, int event_type) {
 	struct epoll_event ev;
 	memset(&ev, 0, sizeof(ev));
-	int fd = evh->get_fd();
-	if (fd < 0 || fd >= max_event_) {
-		rec_log(Log::LVL_ERROR, "fd size : %d", fd);
+	int cid = evh->get_cid();
+	if (cid < 0 || cid >= max_event_) {
+		rec_log(Log::LVL_ERROR, "fd size : %d", cid);
 		return FAIL;
 	}
 
@@ -67,13 +67,13 @@ int Reactor::register_handler(const SEvent &evh, int event_type) {
 		return FAIL;
 	}
 
-	ev.data.fd = fd;
-	if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &ev) == nullfd) {
+	ev.data.fd = cid;
+	if (::epoll_ctl(epfd_, EPOLL_CTL_ADD, evh->get_fd(), &ev) == nullfd) {
 		rec_errno_log();
 		return FAIL;
 	}
-	handlers_[fd] = evh;
-	rec_log(Log::LVL_DEBUG, "register fd : %d", fd);
+	handlers_[cid] = evh;
+	rec_log(Log::LVL_DEBUG, "register cid : %d", cid);
 
 	return 0;
 }
@@ -85,16 +85,16 @@ int Reactor::remove_handler(const SEvent &evh) {
 	}
 
 	int ret = 0;
-	int fd = evh->get_fd();
-	if (fd < 0 || fd >= max_event_) {
-		rec_log(Log::LVL_ERROR, "fd size : %d", fd);
+	int cid = evh->get_cid();
+	if (cid < 0 || cid >= max_event_) {
+		rec_log(Log::LVL_ERROR, "cid : %d", cid);
 		return FAIL;
 	}
 
-	if ((ret = ::epoll_ctl(epfd_, EPOLL_CTL_DEL, fd, NULL)) == FAIL) {
+	if ((ret = ::epoll_ctl(epfd_, EPOLL_CTL_DEL, evh->get_fd(), NULL)) == FAIL) {
 		rec_errno_log();
 	}
-	handlers_[fd].reset();
+	handlers_[cid].reset();
 
 	return 0;
 }
@@ -109,8 +109,8 @@ void Reactor::handle_event(void) {
 	}
 
 	for (int i = 0; i < nfds; ++i) {
-		int fd = events_[i].data.fd;
-		const SEvent &evh = handlers_[fd];
+		int cid = events_[i].data.fd;
+		const SEvent &evh = handlers_[cid];
 		bool close = false;
 		if (!evh) {
 			rec_log(Log::LVL_ERROR, "null evh %d", events_[i].data.fd);
@@ -123,18 +123,18 @@ void Reactor::handle_event(void) {
 			evh->handle_output();
 		}
 		if (events_[i].events & EPOLLRDHUP) {	// 对端关闭
-			rec_log(Log::LVL_DEBUG, "EPOLLRDHUP %d", evh->get_fd());
+			rec_log(Log::LVL_DEBUG, "EPOLLRDHUP cid %d, fd %d", evh->get_cid(), evh->get_fd());
 			close = true;
 		}
 		if (events_[i].events & EPOLLPRI) {	// 带外数据
 			// ignore it
 		}
 		if (events_[i].events & EPOLLERR) {	// 对应的文件描述符发生错误
-			rec_log(Log::LVL_DEBUG, "EPOLLERR %d", evh->get_fd());
+			rec_log(Log::LVL_DEBUG, "EPOLLERR cid %d, fd %d", evh->get_cid(), evh->get_fd());
 			close = true;
 		}
 		if (events_[i].events & EPOLLHUP) {	// 对应的文件描述符被挂断
-			rec_log(Log::LVL_DEBUG, "EPOLLHUP %d", evh->get_fd());
+			rec_log(Log::LVL_DEBUG, "EPOLLHUP cid %d, fd %d", evh->get_cid(), evh->get_fd());
 			close = true;
 		}
 		if (close) {

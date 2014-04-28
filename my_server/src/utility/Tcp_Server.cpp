@@ -60,13 +60,14 @@ void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
 }
 
 void Tcp_Server::drop_handle(int cid) {
+	rec_log(Log::LVL_DEBUG, "cid %d drop handle", cid);
 	svc_holder_.erase_obj(cid);
 }
 
 void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb) {
 	// reactor
 	accept_reactor_.reset(new Reactor);
-	accept_reactor_->init(10);
+	accept_reactor_->init(1);
 	scream_reactor_.reset(new Reactor);
 	scream_reactor_->init(DEFAULT_MAX_EVENT);
 
@@ -75,6 +76,7 @@ void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Ca
 	Sock_Acceptor *sock_acceptor = new Sock_Acceptor;
 	sock_acceptor->init(AF_INET, ACCEPT_SOCK_TYPE, 0, listen_port, max_listen);
 	using namespace std::placeholders;
+	acceptor_->set_cid(0);
 	acceptor_->init(sock_acceptor, std::bind(&Tcp_Server::accept_handle, this, _1));
 
 	// worker

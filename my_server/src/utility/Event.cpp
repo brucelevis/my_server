@@ -7,6 +7,6 @@
 
 #include "Event.h"
 
-Event::Event(void): reactor_(nullptr) {
+Event::Event(void): cid_(nullcid), reactor_(nullptr) {
 
 }

@@ -23,8 +23,6 @@ public:
 	Svc(void);
 	~Svc(void);
 
-	inline void set_cid(int cid);
-	inline int get_cid(void);
 	inline void set_recv_cb(const Recv_Callback &cb);
 	inline void set_close_cb(const Close_Callback &cb);
 	void push_send_msg(Msg_Block &&msg);
@@ -36,20 +34,11 @@ public:
 	virtual void set_fd(int fd) override;
 	void reset(void);
 private:
-	int cid_;
 	Recv_Callback recv_cb_;
 	Close_Callback close_cb_;
 	Thread_Mutex output_lock_;
 	Msg_Block_Deque output_;
 };
-
-inline void Svc::set_cid(int cid) {
-	cid_ = cid;
-}
-
-inline int Svc::get_cid(void) {
-	return cid_;
-}
 
 inline void Svc::set_recv_cb(const Recv_Callback &cb) {
 	recv_cb_ = cb;
