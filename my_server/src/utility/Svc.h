@@ -38,6 +38,7 @@ private:
 	Close_Callback close_cb_;
 	Thread_Mutex output_lock_;
 	Msg_Block_Deque output_;
+	boost::scoped_ptr<Msg_Block> input_;
 };
 
 inline void Svc::set_recv_cb(const Recv_Callback &cb) {

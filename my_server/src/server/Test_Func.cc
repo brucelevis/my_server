@@ -1,5 +1,5 @@
 /*
- * Test_Func.cpp
+ * Test_Func.cc
  *
  *  Created on: Jan 17, 2014
  *      Author: "enjolras@163.com"

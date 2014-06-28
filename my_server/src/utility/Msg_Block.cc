@@ -1,5 +1,5 @@
 /*
- * Msg_Block.cpp
+ * Msg_Block.cc
  *
  *  Created on: Jan 14, 2014
  *      Author: "enjolras@163.com"

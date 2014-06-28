@@ -1,5 +1,5 @@
 /*
- * Sock_Connector.cpp
+ * Sock_Connector.cc
  *
  *  Created on: Apr 21, 2014
  *      Author: "enjolras"

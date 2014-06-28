@@ -1,5 +1,5 @@
 /*
- * Sock_Acceptor.cpp
+ * Sock_Acceptor.cc
  *
  *  Created on: Jan 9, 2014
  *      Author: "enjolras@163.com"

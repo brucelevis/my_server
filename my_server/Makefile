@@ -6,7 +6,7 @@ CXX:=ccache g++
 #DEFINE:=-DLOCAL_DEBUG
 DEFINE:=
 CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
-LDFLAGS+=-lpthread
+LDFLAGS+=-lpthread -lprotobuf
 LIBS:=
 MKDIR:=mkdir -p
 RM:=rm -f
@@ -24,16 +24,16 @@ SERVER:=$(CUR_DIR)/src/server
 DIRS:=$(shell find $(CUR_DIR)/src -type d)
 HEADERS:=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.h))
 HEADER_DIRS:=$(sort $(dir $(HEADERS)))
-SRCS:=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.cpp))
+SRCS:=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.cc))
 SRC_DIRS:=$(sort $(dir $(SRCS)))
-OBJS:=$(patsubst %.cpp,$(BUILD_DIR)/%.o,$(notdir $(SRCS)))
+OBJS:=$(patsubst %.cc,$(BUILD_DIR)/%.o,$(notdir $(SRCS)))
 DEPS:=$(patsubst %.o,%.d,$(OBJS))
 INCLUDES:=$(foreach dir_var,$(DIRS), -I $(dir_var))
 
 export
 
 vpath %.h $(HEADER_DIRS)
-vpath %.cpp $(SRC_DIRS)
+vpath %.cc $(SRC_DIRS)
 
 .PHONY : all $(CLIENT) $(SERVER) clean clean_pch clean_all test_var
 all: $(CLIENT) $(SERVER)
@@ -56,18 +56,18 @@ $(PCH): $(PCH_H)
 	$(CXX) $(CXXFLAGS) $> $^
 
 # object file create rule
-$(BUILD_DIR)/%.o: %.cpp $(PCH)
+$(BUILD_DIR)/%.o: %.cc $(PCH)
 	$(CXX) -c $(CXXFLAGS) $(INCLUDES) $< -o $@
 
 # depend file depend on build dir
 $(DEPS): | $(BUILD_DIR)
 
 # depend file create rule
-$(BUILD_DIR)/%.d: %.cpp
+$(BUILD_DIR)/%.d: %.cc
 	@echo "making $@"
 	@set -e; \
 	$(RM) $@.tmp; \
-	$(CXX) -E -MM $(CXXFLAGS) $(INCLUDES) $(filter %.cpp,$^) > $@.tmp; \
+	$(CXX) -E -MM $(CXXFLAGS) $(INCLUDES) $(filter %.cc,$^) > $@.tmp; \
 	sed 's,\(.*\)\.o[:]*,$(BUILD_DIR)/\1.o $@:,g'<$@.tmp > $@; \
 	$(RM) $@.tmp
 

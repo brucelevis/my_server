@@ -15,10 +15,6 @@ class Msg_Block;
 class Tcp_Server;
 class Game_Server {
 public:
-	enum {
-		OFFLINE = -1
-	};
-
 	typedef std::deque<Msg_Block> Msg_Block_Deque;
 	Game_Server(void);
 	~Game_Server(void);
@@ -33,6 +29,7 @@ private:
 	void close_handle(int cid);
 
 	void msg_handle(int cid, const Msg_Block &msg);
+	void protobuf_msg_handle(int cid, Msg_Block &msg);
 
 	// test through out and delay on without msg handle deque
 	void test_direct_echo(Msg_Block &&msg_block);

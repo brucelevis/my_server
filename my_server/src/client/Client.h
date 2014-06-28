@@ -24,6 +24,8 @@ private:
 	void close_handle(int cid);
 	void loop(void);
 
+	void protobuf_loop(void);
+
 private:
 	boost::scoped_ptr<Tcp_Client> tcp_client_;
 	std::thread thr_;

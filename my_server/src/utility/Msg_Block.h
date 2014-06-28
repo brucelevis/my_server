@@ -68,6 +68,7 @@ public:
 	inline void write_double(double v);
 
 	inline void write_uint32_tohead(uint32_t v);
+	inline void write_bytes(const char *src, size_t len);
 
 	inline int peek_bool(bool &v) const;
 	inline int peek_int8(int8_t &v) const;
@@ -84,13 +85,21 @@ public:
 	inline void write_string(const std::string &v);
 	inline int peek_string(std::string &v) const;
 
+	inline void forward_wptr(size_t len);
+	inline void back_wptr(size_t len);
+	inline void forward_rptr(size_t len);
+	inline void back_rptr(size_t len);
+
 	inline void log_contain(void) const;
+
+	inline char *get_wptr(void);
+
+
 private:
 	inline bool is_readable(size_t len) const;
 	inline void ensure_writeheadable(size_t len);
 	inline void ensure_writeable(size_t len);
 	inline void make_space(size_t len);
-	inline char *get_wptr(void);
 	inline char *get_whptr(size_t len);
 
 	// avoid uncertain type by use private template member func
@@ -130,6 +139,26 @@ inline void Msg_Block::reset(void) {
 	data_.resize(DEFAULT_RESERVE + DEFAULT_CONTENT);
 	rptr_ =	DEFAULT_RESERVE;
 	wptr_ = rptr_;
+}
+
+inline void Msg_Block::forward_wptr(size_t len) {
+	assert(len <= writable_bytes());
+	wptr_ += len;
+}
+
+inline void Msg_Block::back_wptr(size_t len) {
+	assert(len <= readable_bytes());
+	wptr_ -= len;
+}
+
+inline void Msg_Block::forward_rptr(size_t len) {
+	assert(len <= readable_bytes());
+	rptr_ += len;
+}
+
+inline void Msg_Block::back_rptr(size_t len) {
+	assert(len <= reserve_bytes());
+	rptr_ -= len;
 }
 
 inline const char *Msg_Block::get_rptr(void) const {
@@ -198,6 +227,12 @@ inline void Msg_Block::write_uint32_tohead(uint32_t v) {
 	ensure_writeheadable(len);
 	memcpy(get_whptr(len), &v, len);
 	rptr_ -= len;
+}
+
+inline void Msg_Block::write_bytes(const char *src, size_t len) {
+	ensure_writeheadable(len);
+	memcpy(get_wptr(), src, len);
+	wptr_ += len;
 }
 
 template <typename T>

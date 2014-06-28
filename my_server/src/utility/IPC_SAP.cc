@@ -1,5 +1,5 @@
 /*
- * IPC_SAP.cpp
+ * IPC_SAP.cc
  *
  *  Created on: Jan 8, 2014
  *      Author: "enjolras@163.com"

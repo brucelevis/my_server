@@ -1,0 +1,6 @@
+package MSG;
+message login
+{
+    required int64 role_id = 1;
+    required string account = 2;
+}

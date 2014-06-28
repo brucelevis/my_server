@@ -1,5 +1,5 @@
 /*
- * Svc.cpp
+ * Svc.cc
  *
  *  Created on: Jan 13, 2014
  *      Author: "enjolras@163.com"
@@ -10,7 +10,7 @@
 #include "Net_Define.h"
 #include "Msg_Block.h"
 
-Svc::Svc(void) {
+Svc::Svc(void) : input_(new Msg_Block) {
 }
 
 Svc::~Svc(void) {
@@ -27,11 +27,21 @@ void Svc::reset(void) {
 }
 
 void Svc::handle_input(void) {
-	Msg_Block msg_block;
-	msg_block.recv_msg(recv_func_, 0);
-	if (msg_block.readable_bytes() > 0) {
-		msg_block.write_uint32_tohead(get_cid());
-		recv_cb_(std::move(msg_block));
+	input_->recv_msg(recv_func_, 0);
+	while (input_->readable_bytes() > sizeof(uint32_t)) {
+		uint32_t len;
+		input_->read_uint32(len);
+		if (input_ ->readable_bytes() >= len) {	// 长度足够打包了 组包，std::move 交给上层处理
+			Msg_Block packed_msg;
+			packed_msg.write_uint32_tohead(get_cid());
+			packed_msg.write_bytes(input_->get_rptr(), len);
+			recv_cb_(std::move(packed_msg));
+			input_->back_rptr(sizeof(uint32_t));
+			input_->back_wptr(len + sizeof(uint32_t));
+		} else {
+			input_->back_rptr(sizeof(uint32_t));
+			break;
+		}
 	}
 }
 
