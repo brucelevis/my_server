@@ -4,7 +4,6 @@ BUILD_DIR:=$(CUR_DIR)/build
 
 CXX:=ccache g++
 #DEFINE:=-DLOCAL_DEBUG
-DEFINE:=
 CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
 LDFLAGS+=-lpthread -lprotobuf
 LIBS:=
@@ -13,6 +12,7 @@ RM:=rm -f
 RMDIR:=rm -rf
 CLI_TARGET:=$(OUTPUT_DIR)/my_client
 SRV_TARGET:=$(OUTPUT_DIR)/my_server
+AOI_TEST_TARGET:=$(OUTPUT_DIR)/my_aoi_test
 
 # pre header help make faster
 PCH_H:=$(CUR_DIR)/src/Pre_Header.h
@@ -20,6 +20,7 @@ PCH:=$(CUR_DIR)/src/Pre_Header.h.gch
 
 CLIENT:=$(CUR_DIR)/src/client
 SERVER:=$(CUR_DIR)/src/server
+AOI_TEST:=$(CUR_DIR)/src/aoi_test
 
 DIRS:=$(shell find $(CUR_DIR)/src -type d)
 HEADERS:=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.h))
@@ -35,8 +36,8 @@ export
 vpath %.h $(HEADER_DIRS)
 vpath %.cc $(SRC_DIRS)
 
-.PHONY : all $(CLIENT) $(SERVER) clean clean_pch clean_all test_var
-all: $(CLIENT) $(SERVER)
+.PHONY : all $(CLIENT) $(SERVER) $(AOI_TEST) clean clean_pch clean_all test_var
+all: $(CLIENT) $(SERVER) $(AOI_TEST)
 
 # depend rule clean don't need it
 ifneq ($(MAKECMDGOALS), clean)
@@ -71,7 +72,7 @@ $(BUILD_DIR)/%.d: %.cc
 	sed 's,\(.*\)\.o[:]*,$(BUILD_DIR)/\1.o $@:,g'<$@.tmp > $@; \
 	$(RM) $@.tmp
 
-$(CLIENT) $(SERVER) : $(OBJS) $(OUTPUT_DIR)
+$(CLIENT) $(SERVER) $(AOI_TEST) : $(OBJS) $(OUTPUT_DIR)
 	$(MAKE) --directory=$@
 	
 # clean

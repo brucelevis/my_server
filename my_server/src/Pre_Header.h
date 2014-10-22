@@ -29,6 +29,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
+#include <sys/time.h>
 
 // c++ header
 #include <string.h>
@@ -40,6 +41,7 @@
 #include <deque>
 #include <array>
 #include <list>
+#include <set>
 #include <unordered_set>
 #include <unordered_map>
 #include <sstream>
