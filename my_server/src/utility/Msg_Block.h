@@ -34,7 +34,6 @@ public:
 	Msg_Block &operator=(const Msg_Block &msg_block) = default;
 	Msg_Block &operator=(Msg_Block &&msg_block) = default;
 	~Msg_Block(void) = default;
-	friend void swap(Msg_Block &msg1, Msg_Block &msg2);
 
 	void recv_msg(const SendRecv_Func &func, int flags);
 	// success mean all msg has been send fail mean some byte left
@@ -94,6 +93,7 @@ public:
 
 	inline char *get_wptr(void);
 
+	inline void swap(Msg_Block &msg);
 
 private:
 	inline bool is_readable(size_t len) const;
@@ -116,11 +116,18 @@ private:
 	size_t wptr_;
 };
 
-inline void swap(Msg_Block &msg1, Msg_Block &msg2) {
+inline void Msg_Block::swap(Msg_Block &msg) {
 	using std::swap;
-	swap(msg1.data_, msg2.data_);
-	swap(msg1.rptr_, msg2.rptr_);
-	swap(msg1.wptr_, msg2.wptr_);
+	swap(data_, msg.data_);
+	swap(rptr_, msg.rptr_);
+	swap(wptr_, msg.wptr_);
+}
+
+namespace std {
+	template<>
+	inline void swap<Msg_Block>(Msg_Block &msg1, Msg_Block &msg2) {
+		msg1.swap(msg2);
+	}
 }
 
 inline size_t Msg_Block::readable_bytes(void) const {
@@ -188,9 +195,9 @@ inline void Msg_Block::ensure_writeheadable(size_t len) {
 		std::vector<char> data;
 		data.resize(data_.size() + len);
 		memcpy(&data[rptr_ + len], &data_[rptr_], readable_bytes());
-		using namespace std;
 		rptr_ += len;
 		wptr_ += len;
+		using std::swap;
 		swap(data_, data);
 	}
 }

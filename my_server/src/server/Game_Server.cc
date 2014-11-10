@@ -39,15 +39,17 @@ void Game_Server::msg_loop(void) {
 			Msg_Block &msg = handling_msg_.front();
 			int cid = 0;
 			msg.read_int32(cid);
+			// protobuf_msg_handle(cid, msg);
 			protobuf_msg_handle(cid, msg);
 			handling_msg_.pop_front();
 		}
 		{
 			Mutex_Guard<Thread_Mutex> guard(msg_lock_);
-			while (waiting_msg_.empty()) {
+			while (waiting_msg_.empty()) {	// 防止spurious wakeup
 				msg_cond_.wait();
 			}
-			std::swap(handling_msg_, waiting_msg_);
+			using std::swap;
+			swap(handling_msg_, waiting_msg_);	// 当消息都处理完了，并且有消息打包好了，将等待处理的消息，放入处理队列
 		}
 	}
 }

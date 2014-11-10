@@ -198,7 +198,7 @@ void Aoi::output_all_object(void) {
 
 void Aoi::output_object(const SObjList &list, const std::string &str) {
 	rec_log(Log::LVL_INFO, "%s", str.c_str());
-	for (auto it : list) {
+	for (auto &it : list) {
 		rec_log(Log::LVL_INFO, "object %d {%d,%d}", it->get_id(), it->get_x(), it->get_y());
 	}
 }

@@ -7,6 +7,7 @@
 
 #include "Aoi.h"
 #include "Log.h"
+#include "Time_Test.h"
 
 typedef Object::SObject SObject;
 typedef Aoi::SObjectOrderSet SObjectOrderSet;
@@ -15,7 +16,7 @@ const int32_t MAX_X = 300;
 const int32_t MAX_Y = 300;
 const uint32_t MAX_OBJECT = 300;
 const uint32_t MOVE_TIMES = 10;
-const int32_t MAX_MOVE_STEP = 1;
+const int32_t MAX_MOVE_STEP = 2;
 const int32_t MOVE_STEP_REM = MAX_MOVE_STEP * 2 + 1;
 
 // object 创建函数，实际应用中用单例的产生器
@@ -24,29 +25,26 @@ SObject object_generate(uint32_t id, int x, int y) {
 	return object;
 }
 
-long get_time_usec_gap(const timeval &start, const timeval &end) {
-    return (end.tv_sec - start.tv_sec) * 1000000 + end.tv_usec - start.tv_usec;
-}
-
 void time_test(Aoi &aoi) {
 	rec_log(Log::LVL_INFO, "begin move object");
 	SObjectOrderSet leave_set;
 	SObjectOrderSet move_set;
 	SObjectOrderSet enter_set;
-	struct timeval t_start,t_end;
-	gettimeofday(&t_start, 0);
-	for (uint32_t i = 0; i < MAX_OBJECT; ++i) {
-		for (uint32_t j = 0; j < MOVE_TIMES; ++j) {
-			aoi.move(i, random() % MOVE_STEP_REM - MAX_MOVE_STEP, random() % MOVE_STEP_REM - MAX_MOVE_STEP, leave_set, move_set, enter_set);
+	{
+		char info[256] = {0};
+		snprintf(info, sizeof(info), "object nums %d, move times %d", MAX_OBJECT, MOVE_TIMES);
+		Time_Test tester(info);
+		for (uint32_t i = 0; i < MAX_OBJECT; ++i) {
+			for (uint32_t j = 0; j < MOVE_TIMES; ++j) {
+				aoi.move(i, random() % MOVE_STEP_REM - MAX_MOVE_STEP, random() % MOVE_STEP_REM - MAX_MOVE_STEP, leave_set, move_set, enter_set);
+			}
 		}
 	}
-	gettimeofday(&t_end, 0);
-	rec_log(Log::LVL_INFO, "object nums %d, move times %d usec %d", MAX_OBJECT, MOVE_TIMES, get_time_usec_gap(t_start, t_end));
 }
 
 void output_set(const SObjectOrderSet &set, const char *str) {
 	rec_log(Log::LVL_INFO, "%s", str);
-	for (auto it : set) {
+	for (auto &it : set) {
 		rec_log(Log::LVL_INFO, "object %d {%d,%d}", it->get_id(), it->get_x(), it->get_y());
 	}
 }
