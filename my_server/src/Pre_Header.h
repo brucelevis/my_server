@@ -49,6 +49,7 @@
 #include <memory>
 #include <mutex>
 #include <thread>
+#include <atomic>
 
 // boost
 #include <boost/scoped_ptr.hpp>

@@ -132,7 +132,7 @@ int main()
 		for (uint64_t i = 0; i < 100000; ++i) {
 			uint32_t index = rand() % MAX_PLAYER;
 			if (change_player.count(player_info[index].role_id) == 0) {
-				uint32_t add = rand() % (3 * DIVISOR) + 1;
+				uint32_t add = rand() % (10 * DIVISOR) + 1;
 				Player_Info new_info = player_info[index];
 				new_info.new_power = new_info.power + add;
 				change_player[player_info[index].role_id] = new_info;
