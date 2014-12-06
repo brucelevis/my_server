@@ -10,7 +10,7 @@
 #include "Event.h"
 #include "Define.h"
 
-Reactor::Reactor(void) : epfd_(nullfd), max_event_(4096), wait_ms_(-1) {
+Reactor::Reactor(void) : epfd_(nullfd), max_event_(DEFAULT_MAX_EVENT), wait_ms_(-1) {
 
 }
 

@@ -40,7 +40,7 @@ void Game_Server::msg_loop(void) {
 			int cid = 0;
 			msg.read_int32(cid);
 			// protobuf_msg_handle(cid, msg);
-			protobuf_msg_handle(cid, msg);
+			msg_handle(cid, msg);
 			handling_msg_.pop_front();
 		}
 		{
@@ -66,7 +66,7 @@ void Game_Server::msg_handle(int cid, const Msg_Block &msg) {
 }
 
 void Game_Server::protobuf_msg_handle(int cid, Msg_Block &msg) {
-	uint32_t msg_id;
+	uint32_t msg_id = 0;
 	msg.read_uint32(msg_id);
 	if (MSG_OFFLINE == msg_id) {
 		tcp_server_->drop_handle(cid);
@@ -99,15 +99,9 @@ void Game_Server::push_msg(Msg_Block &&msg_block) {
 }
 
 void Game_Server::close_handle(int cid) {
-	rec_log(Log::LVL_INFO, "cid %d drop handle", cid);
+	// rec_log(Log::LVL_INFO, "cid %d drop handle", cid);
 	Msg_Block msg;
 	msg.write_int32(cid);
 	msg.write_int32(MSG_OFFLINE);
 	push_msg(std::move(msg));
-}
-
-void Game_Server::test_direct_echo(Msg_Block &&msg_block) {
-	int cid = 0;
-	msg_block.read_int32(cid);
-	tcp_server_->send_to_client(cid, std::move(msg_block));
 }

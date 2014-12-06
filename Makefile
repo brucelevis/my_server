@@ -2,10 +2,12 @@ CUR_DIR:=$(shell pwd)
 OUTPUT_DIR:=$(CUR_DIR)/debug
 BUILD_DIR:=$(CUR_DIR)/build
 
-CXX:=ccache g++
+#CXX:=ccache g++
+CXX:=g++
 #DEFINE:=-DLOCAL_DEBUG
-CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
-LDFLAGS+=-lpthread -lprotobuf
+CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual -Winvalid-pch $(DEFINE)
+#CXXFLAGS:=-O3 -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
+LDFLAGS+=-lpthread -lprotobuf -ltcmalloc
 LIBS:=
 MKDIR:=mkdir -p
 RM:=rm -f

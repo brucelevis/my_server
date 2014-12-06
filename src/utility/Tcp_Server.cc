@@ -40,6 +40,7 @@ void Tcp_Server::scream_loop(void) {
 void Tcp_Server::accept_handle(int sock_fd) {
 	auto svc = std::make_shared<Svc>();
 	svc->set_fd(sock_fd);
+	svc->enable(IPC_SAP::NONBLOCK);
 	// svc->set_tcpnodelay(true);
 	svc->set_reactor(scream_reactor_.get());
 

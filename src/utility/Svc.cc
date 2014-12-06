@@ -26,24 +26,42 @@ void Svc::reset(void) {
 	output_.clear();
 }
 
+//void Svc::handle_input(void) {
+//	input_->recv_msg(recv_func_, 0);
+//	while (input_->readable_bytes() > sizeof(uint32_t)) {
+//		uint32_t len;
+//		input_->read_uint32(len);
+//		if (input_ ->readable_bytes() >= len) {	// 长度足够打包了 组包，std::move 交给上层处理
+//			Msg_Block packed_msg;
+//			packed_msg.write_uint32_tohead(get_cid());
+//			packed_msg.write_bytes(input_->get_rptr(), len);
+//			recv_cb_(std::move(packed_msg));
+//			input_->back_rptr(sizeof(uint32_t));
+//			input_->back_wptr(len + sizeof(uint32_t));
+//		} else {
+//			input_->back_rptr(sizeof(uint32_t));
+//			break;
+//		}
+//	}
+//}
+
 void Svc::handle_input(void) {
 	input_->recv_msg(recv_func_, 0);
-	while (input_->readable_bytes() > sizeof(uint32_t)) {
-		uint32_t len;
-		input_->read_uint32(len);
-		if (input_ ->readable_bytes() >= len) {	// 长度足够打包了 组包，std::move 交给上层处理
-			Msg_Block packed_msg;
-			packed_msg.write_uint32_tohead(get_cid());
-			packed_msg.write_bytes(input_->get_rptr(), len);
-			recv_cb_(std::move(packed_msg));
-			input_->back_rptr(sizeof(uint32_t));
-			input_->back_wptr(len + sizeof(uint32_t));
-		} else {
-			input_->back_rptr(sizeof(uint32_t));
-			break;
-		}
+	while (input_->readable_bytes() > 0) {
+		input_->write_uint32_tohead(get_cid());
+		recv_cb_(std::move(*input_));
+		input_->reset();
 	}
 }
+
+//void Svc::handle_input(void) {	// direct echo
+//	input_->recv_msg(recv_func_, 0);
+//	if (input_->readable_bytes() > 0) {
+//		if (SUCCESS == input_->send_msg(send_func_, 0)) {
+//			input_->reset();
+//		}
+//	}
+//}
 
 int Svc::handle_output(void) {
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
