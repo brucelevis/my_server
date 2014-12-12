@@ -1,8 +1,8 @@
 TARGET=$(OUTPUT_DIR)/rank_test
-DIRS=./ ../utility
-SRCS=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.cc))
-OBJS=$(patsubst %.cc,$(BUILD_DIR)/%.o,$(notdir $(SRCS)))
+OBJS=rank_test.o Log.o
+OBJS_WITH_PATH=$(addprefix $(BUILD_DIR)/, $(OBJS))
 
 .PHONY : all
-all: $(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(LIBS) $(LDFLAGS)
+all: $(OBJS_WITH_PATH)
+	$(CXX) -o $(TARGET) $(OBJS_WITH_PATH) $(LIBS) $(LDFLAGS)
+	
