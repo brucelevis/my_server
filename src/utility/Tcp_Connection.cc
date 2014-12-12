@@ -1,23 +1,23 @@
 /*
- * Svc.cc
+ * Tcp_Connection.cc
  *
  *  Created on: Jan 13, 2014
  *      Author: "enjolras@163.com"
  */
 
-#include "Svc.h"
+#include "Tcp_Connection.h"
 #include "Log.h"
 #include "Net_Define.h"
 #include "Msg_Block.h"
 
-Svc::Svc(void) : input_(new Msg_Block) {
+Tcp_Connection::Tcp_Connection(void) : input_(new Msg_Block) {
 }
 
-Svc::~Svc(void) {
+Tcp_Connection::~Tcp_Connection(void) {
 	Sock::fini();
 }
 
-void Svc::reset(void) {
+void Tcp_Connection::reset(void) {
 	Event::reset();
 	Sock::fini();
 	IPC_SAP::set_fd(nullfd);
@@ -26,7 +26,7 @@ void Svc::reset(void) {
 	output_.clear();
 }
 
-//void Svc::handle_input(void) {
+//void Tcp_Connection::handle_input(void) {
 //	input_->recv_msg(recv_func_, 0);
 //	while (input_->readable_bytes() > sizeof(uint32_t)) {
 //		uint32_t len;
@@ -45,7 +45,7 @@ void Svc::reset(void) {
 //	}
 //}
 
-void Svc::handle_input(void) {
+void Tcp_Connection::handle_input(void) {
 	input_->recv_msg(recv_func_, 0);
 	while (input_->readable_bytes() > 0) {
 		input_->write_uint32_tohead(get_cid());
@@ -54,7 +54,7 @@ void Svc::handle_input(void) {
 	}
 }
 
-//void Svc::handle_input(void) {	// direct echo
+//void Tcp_Connection::handle_input(void) {	// direct echo
 //	input_->recv_msg(recv_func_, 0);
 //	if (input_->readable_bytes() > 0) {
 //		if (SUCCESS == input_->send_msg(send_func_, 0)) {
@@ -63,7 +63,7 @@ void Svc::handle_input(void) {
 //	}
 //}
 
-int Svc::handle_output(void) {
+int Tcp_Connection::handle_output(void) {
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	for (Msg_Block_Deque::iterator it = output_.begin(); it != output_.end(); ) {
 		if (SUCCESS == (*it).send_msg(send_func_, 0)) {
@@ -79,19 +79,19 @@ int Svc::handle_output(void) {
 	}
 }
 
-void Svc::handle_close(void) {
+void Tcp_Connection::handle_close(void) {
 	close_cb_(get_cid());
 }
 
-int Svc::get_fd(void) const {
+int Tcp_Connection::get_fd(void) const {
 	return Sock_IO::get_fd();
 }
 
-void Svc::set_fd(int fd) {
+void Tcp_Connection::set_fd(int fd) {
 	Sock_IO::set_fd(fd);
 }
 
-void Svc::push_send_msg(Msg_Block &&msg) {
+void Tcp_Connection::push_send_msg(Msg_Block &&msg) {
 	Mutex_Guard<Thread_Mutex> guard(output_lock_);
 	if (output_.empty()) {
 		if (SUCCESS == msg.send_msg(send_func_, 0)) {

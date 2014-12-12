@@ -7,7 +7,7 @@
 
 #include "Tcp_Client.h"
 #include "Define.h"
-#include "Svc.h"
+#include "Tcp_Connection.h"
 #include "Sock_Connector.h"
 #include "Net_Define.h"
 #include "Reactor.h"
@@ -22,7 +22,7 @@ Tcp_Client::~Tcp_Client(void) {
 }
 
 int Tcp_Client::init(const std::string &ip, const int port, const Recv_Callback& recv_cb, const Close_Callback& close_cb) {
-	svc_.reset(new Svc);
+	conn_.reset(new Tcp_Connection);
 	sock_.reset(new Sock_Connector);
 	scream_reactor_.reset(new Reactor);
 	ip_ = ip;
@@ -31,20 +31,20 @@ int Tcp_Client::init(const std::string &ip, const int port, const Recv_Callback&
 	if (SUCCESS == ret) {
 		ret = sock_->enable(Sock::NONBLOCK);
 		if (SUCCESS == ret) {
-			svc_->set_fd(sock_->get_fd());
+			conn_->set_fd(sock_->get_fd());
 			scream_reactor_->init(1);
-			svc_->set_reactor(scream_reactor_.get());
-			svc_->set_recv_cb(recv_cb);
-			svc_->set_close_cb(close_cb);
-			svc_->set_cid(0);
-			scream_reactor_->register_handler(svc_, Event::READ_WRITE_MASK);
+			conn_->set_reactor(scream_reactor_.get());
+			conn_->set_recv_cb(recv_cb);
+			conn_->set_close_cb(close_cb);
+			conn_->set_cid(0);
+			scream_reactor_->register_handler(conn_, Event::READ_WRITE_MASK);
 		}
 	}
 	return ret;
 }
 
 int Tcp_Client::send(Msg_Block &&msg) {
-	svc_->push_send_msg(std::move(msg));
+	conn_->push_send_msg(std::move(msg));
 	return SUCCESS;
 }
 

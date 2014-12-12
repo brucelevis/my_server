@@ -11,7 +11,7 @@
 #include "Sock_Acceptor.h"
 #include "Net_Define.h"
 #include "Log.h"
-#include "Svc.h"
+#include "Tcp_Connection.h"
 #include "Msg_Block.h"
 #include "Nonblock_Worker.h"
 #include "Block_Worker.h"
@@ -38,31 +38,31 @@ void Tcp_Server::scream_loop(void) {
 }
 
 void Tcp_Server::accept_handle(int sock_fd) {
-	auto svc = std::make_shared<Svc>();
-	svc->set_fd(sock_fd);
-	svc->enable(IPC_SAP::NONBLOCK);
-	// svc->set_tcpnodelay(true);
-	svc->set_reactor(scream_reactor_.get());
+	auto conn = std::make_shared<Tcp_Connection>();
+	conn->set_fd(sock_fd);
+	conn->enable(IPC_SAP::NONBLOCK);
+	// conn->set_tcpnodelay(true);
+	conn->set_reactor(scream_reactor_.get());
 
-	svc->set_recv_cb(recv_cb_);
-	svc->set_close_cb(close_cb_);
+	conn->set_recv_cb(recv_cb_);
+	conn->set_close_cb(close_cb_);
 
-	scream_worker_->push([svc, this] {
-		svc_holder_.insert_svc(svc);
-		scream_reactor_->register_handler(svc, Event::READ_WRITE_MASK);
+	scream_worker_->push([conn, this] {
+		conn_holder_.insert(conn);
+		scream_reactor_->register_handler(conn, Event::READ_WRITE_MASK);
 	});
 }
 
 void Tcp_Server::send_to_client(const int cid, Msg_Block &&msg) {
-	SSvc svc = svc_holder_.find_svc(cid);
-	if (svc) {
-		svc->push_send_msg(std::move(msg));
+	SConn conn = conn_holder_.find(cid);
+	if (conn) {
+		conn->push_send_msg(std::move(msg));
 	}
 }
 
 void Tcp_Server::drop_handle(int cid) {
 	rec_log(Log::LVL_DEBUG, "cid %d drop handle", cid);
-	svc_holder_.erase_obj(cid);
+	conn_holder_.erase(cid);
 }
 
 void Tcp_Server::init(const int listen_port, const int max_listen, const Recv_Callback &recv_cb, const Close_Callback &close_cb) {

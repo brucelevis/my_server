@@ -6,7 +6,7 @@
  */
 
 #include "Msg_Block.h"
-#include "Svc.h"
+#include "Tcp_Connection.h"
 
 Msg_Block::Msg_Block(void) : Msg_Block(DEFAULT_RESERVE, DEFAULT_CONTENT) {
 

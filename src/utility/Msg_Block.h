@@ -21,7 +21,7 @@
 
 const uint32_t DEFAULT_RESERVE = 16;
 const uint32_t DEFAULT_CONTENT = 1024;
-class Svc;
+class Tcp_Connection;
 class Msg_Block : private copyable {
 public:
 	typedef std::function<int(void *, size_t, int)> SendRecv_Func;

@@ -1,36 +1,36 @@
 /*
- * Svc_Holder.h
+ * Conn_Holder.h
  *
  *  Created on: Jan 26, 2014
  *      Author: "enjolras@163.com"
  */
 
-#ifndef SVC_HOLDER_H_
-#define SVC_HOLDER_H_
+#ifndef CONN_HOLDER_H_
+#define CONN_HOLDER_H_
 
 #include "Pre_Header.h"
 #include "Define.h"
 #include "Thr_Mutex.h"
 #include "Log.h"
-#include "Svc.h"
+#include "Tcp_Connection.h"
 
-typedef std::shared_ptr<Svc> SSvc;
+typedef std::shared_ptr<Tcp_Connection> SConn;
 template <typename LOCK, int MAX_OBJ>
-class Svc_Holder : public noncopyable {
+class Conn_Holder : public noncopyable {
 public:
 	typedef Mutex_Guard<LOCK> Guard;
-	Svc_Holder(void) : current_max_cid_(nullcid) {}
-	~Svc_Holder(void) = default;
+	Conn_Holder(void) : current_max_cid_(nullcid) {}
+	~Conn_Holder(void) = default;
 
-	inline void insert_svc(const SSvc &svc);
-	inline SSvc erase_obj(int cid);
-	inline SSvc find_svc(int cid);
+	inline void insert(const SConn &conn);
+	inline SConn erase(int cid);
+	inline SConn find(int cid);
 private:
 	inline int generate_cid(void);
 
 private:
-	std::array<SSvc, MAX_OBJ> svc_;
-	std::array<LOCK, MAX_OBJ> svc_lock_;
+	std::array<SConn, MAX_OBJ> conn_;
+	std::array<LOCK, MAX_OBJ> conn_lock_;
 	LOCK unused_lock_;
 	std::unordered_set<int> unused_;
 	int current_max_cid_;
@@ -38,20 +38,20 @@ private:
 };
 
 template <typename LOCK, int MAX_OBJ>
-inline void Svc_Holder<LOCK, MAX_OBJ>::insert_svc(const SSvc &svc) {
+inline void Conn_Holder<LOCK, MAX_OBJ>::insert(const SConn &conn) {
 	int cid = generate_cid();
 	if (cid >= max_cid_) {
 		rec_log(Log::LVL_ERROR, "larger than max cid %d", max_cid_);
 		return;
 	}
-	svc->set_cid(cid);
-	Guard guard(svc_lock_[cid]);
-	svc_[cid] = svc;
+	conn->set_cid(cid);
+	Guard guard(conn_lock_[cid]);
+	conn_[cid] = conn;
 }
 
 template <typename LOCK, int MAX_OBJ>
-inline SSvc Svc_Holder<LOCK, MAX_OBJ>::erase_obj(int cid) {
-	SSvc ret;
+inline SConn Conn_Holder<LOCK, MAX_OBJ>::erase(int cid) {
+	SConn ret;
 	if (cid >= max_cid_) {
 		rec_log(Log::LVL_ERROR, "larger than max cid %d", max_cid_);
 		return ret;
@@ -61,26 +61,26 @@ inline SSvc Svc_Holder<LOCK, MAX_OBJ>::erase_obj(int cid) {
 		unused_.insert(cid);
 	}
 	{
-		Guard guard(svc_lock_[cid]);
-		ret.swap(svc_[cid]);
+		Guard guard(conn_lock_[cid]);
+		ret.swap(conn_[cid]);
 		return ret;
 	}
 }
 
 template <typename LOCK, int MAX_OBJ>
-inline SSvc Svc_Holder<LOCK, MAX_OBJ>::find_svc(int cid) {
+inline SConn Conn_Holder<LOCK, MAX_OBJ>::find(int cid) {
 	if (cid >= max_cid_) {
 		rec_log(Log::LVL_ERROR, "larger than max cid %d", max_cid_);
 		return nullptr;
 	}
 	{
-		Guard guard(svc_lock_[cid]);
-		return svc_[cid];
+		Guard guard(conn_lock_[cid]);
+		return conn_[cid];
 	}
 }
 
 template <typename LOCK, int MAX_OBJ>
-inline int Svc_Holder<LOCK, MAX_OBJ>::generate_cid(void) {
+inline int Conn_Holder<LOCK, MAX_OBJ>::generate_cid(void) {
 	{
 		Guard guard(unused_lock_);
 		if (!unused_.empty()) {
@@ -94,4 +94,4 @@ inline int Svc_Holder<LOCK, MAX_OBJ>::generate_cid(void) {
 	return current_max_cid_;
 }
 
-#endif /* SVC_HOLDER_H_ */
+#endif /* CONN_HOLDER_H_ */

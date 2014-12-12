@@ -11,7 +11,7 @@
 #include "Pre_Header.h"
 #include "Copy_Control.h"
 
-class Svc;
+class Tcp_Connection;
 class Msg_Block;
 class Sock_Connector;
 class Reactor;
@@ -28,7 +28,7 @@ public:
 	void loop(void);
 
 private:
-	std::shared_ptr<Svc> svc_;
+	std::shared_ptr<Tcp_Connection> conn_;
 	boost::scoped_ptr<Sock_Connector> sock_;
 	boost::scoped_ptr<Reactor> scream_reactor_;
 	std::string ip_;
