@@ -30,6 +30,9 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <sys/time.h>
+#include <limits.h>
+#include <signal.h>
+#include <sys/select.h>
 
 // c++ header
 #include <string.h>

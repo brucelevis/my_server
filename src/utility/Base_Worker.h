@@ -11,12 +11,10 @@
 #include "Pre_Header.h"
 #include "Thr_Mutex.h"
 #include "Thr_Mutex_Guard.h"
+#include "Functor.h"
 
 class Base_Worker : private noncopyable {
 public:
-	typedef std::function<void()> Functor;
-	typedef std::deque<Functor> Functor_Deque;
-
 	inline void set_loop_thrid(void);
 	inline bool is_in_loop_thread(void);
 

@@ -26,16 +26,16 @@ inline void Nonblock_Worker::push(const Functor &opt) {
 }
 
 inline void Nonblock_Worker::process(void) {
-	while (!handleing_opt_.empty()) {
-		Functor &opt = handleing_opt_.front();
-		opt();
-		handleing_opt_.pop_front();
-	}
 	{
 		Mutex_Guard<Thread_Mutex> guard(lock_);
 		if (!waiting_opt_.empty()) {
 			std::swap(handleing_opt_, waiting_opt_);
 		}
+	}
+	while (!handleing_opt_.empty()) {
+		Functor &opt = handleing_opt_.front();
+		opt();
+		handleing_opt_.pop_front();
 	}
 }
 
