@@ -15,8 +15,8 @@ class Event;
 class Reactor : private noncopyable {
 public:
 	enum {
-		DEFAULT_MAX_EVENT = 4096,
-		MAX_MAX_EVENT = 8192
+		DEFAULT_MAX_EVENT = 102400,
+		MAX_MAX_EVENT = 102400
 	};
 
 	typedef std::shared_ptr<Event> SEvent;

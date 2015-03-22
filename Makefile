@@ -5,8 +5,8 @@ BUILD_DIR:=$(CUR_DIR)/build
 #CXX:=ccache g++
 CXX:=g++
 #DEFINE:=-DLOCAL_DEBUG
-CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual -Winvalid-pch $(DEFINE)
-#CXXFLAGS:=-O3 -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
+#CXXFLAGS:=-g -Wall -std=c++11 -Woverloaded-virtual -Winvalid-pch $(DEFINE)
+CXXFLAGS:=-O3 -Wall -std=c++11 -Woverloaded-virtual $(DEFINE)
 LDFLAGS+=-lpthread -lprotobuf -ltcmalloc
 LIBS:=
 MKDIR:=mkdir -p
@@ -17,6 +17,7 @@ SRV_TARGET:=$(OUTPUT_DIR)/my_server
 AOI_TEST_TARGET:=$(OUTPUT_DIR)/aoi_test
 RANK_TEST_TARGET:=$(OUTPUT_DIR)/rank_test
 TIMER_TEST_TARGET:=$(OUTPUT_DIR)/timer_test
+PROTO_BENCHMARK_TARGET:=$(OUTPUT_DIR)/proto_benchmark
 
 # pre header help make faster
 PCH_H:=$(CUR_DIR)/src/Pre_Header.h
@@ -27,6 +28,7 @@ SERVER:=$(CUR_DIR)/src/server
 AOI_TEST:=$(CUR_DIR)/src/aoi_test
 RANK_TEST:=$(CUR_DIR)/src/rank_test
 TIMER_TEST:=$(CUR_DIR)/src/timer_test
+PROTO_BENCHMARK:=$(CUR_DIR)/src/proto_benchmark
 
 DIRS:=$(shell find $(CUR_DIR)/src -type d)
 HEADERS:=$(foreach dir_var,$(DIRS),$(wildcard $(dir_var)/*.h))
@@ -42,8 +44,8 @@ export
 vpath %.h $(HEADER_DIRS)
 vpath %.cc $(SRC_DIRS)
 
-.PHONY : all $(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST) clean clean_pch clean_all test_var
-all: $(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST)
+.PHONY : all $(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST) $(PROTO_BENCHMARK) clean clean_pch clean_all test_var
+all: $(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST) $(PROTO_BENCHMARK)
 
 # depend rule clean don't need it
 ifneq ($(MAKECMDGOALS), clean)
@@ -78,7 +80,7 @@ $(BUILD_DIR)/%.d: %.cc
 	sed 's,\(.*\)\.o[:]*,$(BUILD_DIR)/\1.o $@:,g'<$@.tmp > $@; \
 	$(RM) $@.tmp
 
-$(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST) : $(OBJS) $(OUTPUT_DIR)
+$(CLIENT) $(SERVER) $(AOI_TEST) $(RANK_TEST) $(TIMER_TEST) $(PROTO_BENCHMARK): $(OBJS) $(OUTPUT_DIR)
 	$(MAKE) --directory=$@
 	
 # clean
