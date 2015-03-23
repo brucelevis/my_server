@@ -1,5 +1,5 @@
 TARGET=$(OUTPUT_DIR)/proto_benchmark
-OBJS=proto_benchmark_main.o google_speed.pb.o google_size.pb.o Log.o
+OBJS=proto_benchmark_main.o google_speed.pb.o google_size.pb.o
 OBJS_WITH_PATH=$(addprefix $(BUILD_DIR)/, $(OBJS))
 
 .PHONY : all
