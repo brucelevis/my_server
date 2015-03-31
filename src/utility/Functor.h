@@ -2,7 +2,7 @@
  * Functor.h
  *
  *  Created on: Dec 13, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #ifndef FUNCTOR_H_

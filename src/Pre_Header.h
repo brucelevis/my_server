@@ -2,8 +2,8 @@
  * Pre_Header.h
  *
  *  Created on: Jan 7, 2014
- *      Author: "enjolras@163.com"
- *      similar to vc stdafx.h
+ *	  Author: "enjolras@163.com"
+ *	  similar to vc stdafx.h
  */
 
 #ifndef PRE_HEADER_H_

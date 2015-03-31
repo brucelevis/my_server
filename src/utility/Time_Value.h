@@ -3,7 +3,7 @@
  * aa.cpp
  *
  *  Created on: Mar 19, 2012
- *      Author: ChenLong
+ *	  Author: ChenLong
  *
  *  此类大部分代码源自ACE_Time_Value
  */

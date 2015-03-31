@@ -2,7 +2,7 @@
  * aoi_test_main.cc
  *
  *  Created on: Oct 21, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include "Aoi.h"

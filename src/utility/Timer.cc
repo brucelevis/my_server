@@ -2,7 +2,7 @@
  * Timer.cc
  *
  *  Created on: Dec 12, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include "Timer.h"

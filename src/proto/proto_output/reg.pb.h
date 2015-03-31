@@ -48,16 +48,16 @@ class reg : public ::google::protobuf::Message {
   reg(const reg& from);
 
   inline reg& operator=(const reg& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -79,9 +79,9 @@ class reg : public ::google::protobuf::Message {
 
   int ByteSize() const;
   bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
+	  ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
+	  ::google::protobuf::io::CodedOutputStream* output) const;
   ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
   int GetCachedSize() const { return _cached_size_; }
   private:
@@ -91,10 +91,10 @@ class reg : public ::google::protobuf::Message {
   void InternalSwap(reg* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -242,7 +242,7 @@ inline void reg::set_account(const char* value) {
 inline void reg::set_account(const char* value, size_t size) {
   set_has_account();
   account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:MSG.reg.account)
 }
 inline ::std::string* reg::mutable_account() {
@@ -256,9 +256,9 @@ inline ::std::string* reg::release_account() {
 }
 inline void reg::set_allocated_account(::std::string* account) {
   if (account != NULL) {
-    set_has_account();
+	set_has_account();
   } else {
-    clear_has_account();
+	clear_has_account();
   }
   account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
   // @@protoc_insertion_point(field_set_allocated:MSG.reg.account)

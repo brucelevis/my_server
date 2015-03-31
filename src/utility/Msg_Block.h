@@ -2,15 +2,15 @@
  * Msg_Block.h
  *
  *  Created on: Jan 14, 2014
- *      Author: "enjolras@163.com"
+ *	  Author: "enjolras@163.com"
  */
 
 // +---------------+------------------+------------------+
 // | reserve bytes |  readable bytes  |  writable bytes  |
-// |               |     (CONTENT)    |                  |
+// |			   |	 (CONTENT)	|				  |
 // +---------------+------------------+------------------+
-// |               |                  |                  |
-// 0      <=   	rptr_      <=		wptr_      <=     	size
+// |			   |				  |				  |
+// 0	  <=   	rptr_	  <=		wptr_	  <=	 	size
 
 #ifndef MSG_BLOCK_H_
 #define MSG_BLOCK_H_

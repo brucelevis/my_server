@@ -30,26 +30,26 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 void protobuf_AssignDesc_reg_2eproto() {
   protobuf_AddDesc_reg_2eproto();
   const ::google::protobuf::FileDescriptor* file =
-    ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
-      "reg.proto");
+	::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
+	  "reg.proto");
   GOOGLE_CHECK(file != NULL);
   reg_descriptor_ = file->message_type(0);
   static const int reg_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, career_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, sex_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, account_),
+	GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, career_),
+	GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, sex_),
+	GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, account_),
   };
   reg_reflection_ =
-    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      reg_descriptor_,
-      reg::default_instance_,
-      reg_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, _has_bits_[0]),
-      -1,
-      -1,
-      sizeof(reg),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, _internal_metadata_),
-      -1);
+	::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+	  reg_descriptor_,
+	  reg::default_instance_,
+	  reg_offsets_,
+	  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, _has_bits_[0]),
+	  -1,
+	  -1,
+	  sizeof(reg),
+	  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(reg, _internal_metadata_),
+	  -1);
 }
 
 namespace {
@@ -57,13 +57,13 @@ namespace {
 GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AssignDescriptors_once_);
 inline void protobuf_AssignDescriptorsOnce() {
   ::google::protobuf::GoogleOnceInit(&protobuf_AssignDescriptors_once_,
-                 &protobuf_AssignDesc_reg_2eproto);
+				 &protobuf_AssignDesc_reg_2eproto);
 }
 
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      reg_descriptor_, &reg::default_instance());
+	  reg_descriptor_, &reg::default_instance());
 }
 
 }  // namespace
@@ -80,10 +80,10 @@ void protobuf_AddDesc_reg_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\treg.proto\022\003MSG\"3\n\003reg\022\016\n\006career\030\001 \002(\005\022"
-    "\013\n\003sex\030\002 \002(\005\022\017\n\007account\030\003 \002(\t", 69);
+	"\n\treg.proto\022\003MSG\"3\n\003reg\022\016\n\006career\030\001 \002(\005\022"
+	"\013\n\003sex\030\002 \002(\005\022\017\n\007account\030\003 \002(\t", 69);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
-    "reg.proto", &protobuf_RegisterTypes);
+	"reg.proto", &protobuf_RegisterTypes);
   reg::default_instance_ = new reg();
   reg::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_reg_2eproto);
@@ -92,7 +92,7 @@ void protobuf_AddDesc_reg_2eproto() {
 // Force AddDescriptors() to be called at static initialization time.
 struct StaticDescriptorInitializer_reg_2eproto {
   StaticDescriptorInitializer_reg_2eproto() {
-    protobuf_AddDesc_reg_2eproto();
+	protobuf_AddDesc_reg_2eproto();
   }
 } static_descriptor_initializer_reg_2eproto_;
 
@@ -125,7 +125,7 @@ void reg::InitAsDefaultInstance() {
 
 reg::reg(const reg& from)
   : ::google::protobuf::Message(),
-    _internal_metadata_(NULL) {
+	_internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
   // @@protoc_insertion_point(copy_constructor:MSG.reg)
@@ -171,7 +171,7 @@ reg* reg::default_instance_ = NULL;
 reg* reg::New(::google::protobuf::Arena* arena) const {
   reg* n = new reg;
   if (arena != NULL) {
-    arena->Own(n);
+	arena->Own(n);
   }
   return n;
 }
@@ -182,14 +182,14 @@ void reg::Clear() {
 
 #define ZR_(first, last) do {\
   ::memset(&first, 0,\
-           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+		   ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
   if (_has_bits_[0 / 32] & 7) {
-    ZR_(career_, sex_);
-    if (has_account()) {
-      account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
+	ZR_(career_, sex_);
+	if (has_account()) {
+	  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+	}
   }
 
 #undef ZR_HELPER_
@@ -197,78 +197,78 @@ void reg::Clear() {
 
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   if (_internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->Clear();
+	mutable_unknown_fields()->Clear();
   }
 }
 
 bool reg::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+	::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:MSG.reg)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 career = 1;
-      case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &career_)));
-          set_has_career();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(16)) goto parse_sex;
-        break;
-      }
+	::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+	tag = p.first;
+	if (!p.second) goto handle_unusual;
+	switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+	  // required int32 career = 1;
+	  case 1: {
+		if (tag == 8) {
+		  DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+				   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+				 input, &career_)));
+		  set_has_career();
+		} else {
+		  goto handle_unusual;
+		}
+		if (input->ExpectTag(16)) goto parse_sex;
+		break;
+	  }
 
-      // required int32 sex = 2;
-      case 2: {
-        if (tag == 16) {
-         parse_sex:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &sex_)));
-          set_has_sex();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(26)) goto parse_account;
-        break;
-      }
+	  // required int32 sex = 2;
+	  case 2: {
+		if (tag == 16) {
+		 parse_sex:
+		  DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+				   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+				 input, &sex_)));
+		  set_has_sex();
+		} else {
+		  goto handle_unusual;
+		}
+		if (input->ExpectTag(26)) goto parse_account;
+		break;
+	  }
 
-      // required string account = 3;
-      case 3: {
-        if (tag == 26) {
-         parse_account:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_account()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->account().data(), this->account().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "MSG.reg.account");
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
+	  // required string account = 3;
+	  case 3: {
+		if (tag == 26) {
+		 parse_account:
+		  DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+				input, this->mutable_account()));
+		  ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+			this->account().data(), this->account().length(),
+			::google::protobuf::internal::WireFormat::PARSE,
+			"MSG.reg.account");
+		} else {
+		  goto handle_unusual;
+		}
+		if (input->ExpectAtEnd()) goto success;
+		break;
+	  }
 
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
+	  default: {
+	  handle_unusual:
+		if (tag == 0 ||
+			::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+			::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+		  goto success;
+		}
+		DO_(::google::protobuf::internal::WireFormat::SkipField(
+			  input, tag, mutable_unknown_fields()));
+		break;
+	  }
+	}
   }
 success:
   // @@protoc_insertion_point(parse_success:MSG.reg)
@@ -280,62 +280,62 @@ failure:
 }
 
 void reg::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
+	::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:MSG.reg)
   // required int32 career = 1;
   if (has_career()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->career(), output);
+	::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->career(), output);
   }
 
   // required int32 sex = 2;
   if (has_sex()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->sex(), output);
+	::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->sex(), output);
   }
 
   // required string account = 3;
   if (has_account()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->account().data(), this->account().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "MSG.reg.account");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->account(), output);
+	::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+	  this->account().data(), this->account().length(),
+	  ::google::protobuf::internal::WireFormat::SERIALIZE,
+	  "MSG.reg.account");
+	::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+	  3, this->account(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
+	::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+		unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:MSG.reg)
 }
 
 ::google::protobuf::uint8* reg::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+	::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:MSG.reg)
   // required int32 career = 1;
   if (has_career()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->career(), target);
+	target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->career(), target);
   }
 
   // required int32 sex = 2;
   if (has_sex()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->sex(), target);
+	target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->sex(), target);
   }
 
   // required string account = 3;
   if (has_account()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->account().data(), this->account().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "MSG.reg.account");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->account(), target);
+	::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+	  this->account().data(), this->account().length(),
+	  ::google::protobuf::internal::WireFormat::SERIALIZE,
+	  "MSG.reg.account");
+	target =
+	  ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+		3, this->account(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
+	target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+		unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:MSG.reg)
   return target;
@@ -345,24 +345,24 @@ int reg::RequiredFieldsByteSizeFallback() const {
   int total_size = 0;
 
   if (has_career()) {
-    // required int32 career = 1;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->career());
+	// required int32 career = 1;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::Int32Size(
+		this->career());
   }
 
   if (has_sex()) {
-    // required int32 sex = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->sex());
+	// required int32 sex = 2;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::Int32Size(
+		this->sex());
   }
 
   if (has_account()) {
-    // required string account = 3;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->account());
+	// required string account = 3;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::StringSize(
+		this->account());
   }
 
   return total_size;
@@ -371,28 +371,28 @@ int reg::ByteSize() const {
   int total_size = 0;
 
   if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
-    // required int32 career = 1;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->career());
+	// required int32 career = 1;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::Int32Size(
+		this->career());
 
-    // required int32 sex = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->sex());
+	// required int32 sex = 2;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::Int32Size(
+		this->sex());
 
-    // required string account = 3;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->account());
+	// required string account = 3;
+	total_size += 1 +
+	  ::google::protobuf::internal::WireFormatLite::StringSize(
+		this->account());
 
   } else {
-    total_size += RequiredFieldsByteSizeFallback();
+	total_size += RequiredFieldsByteSizeFallback();
   }
   if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
+	total_size +=
+	  ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+		unknown_fields());
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -403,31 +403,31 @@ int reg::ByteSize() const {
 void reg::MergeFrom(const ::google::protobuf::Message& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const reg* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const reg*>(
-      &from);
+	::google::protobuf::internal::dynamic_cast_if_available<const reg*>(
+	  &from);
   if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+	::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-    MergeFrom(*source);
+	MergeFrom(*source);
   }
 }
 
 void reg::MergeFrom(const reg& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_career()) {
-      set_career(from.career());
-    }
-    if (from.has_sex()) {
-      set_sex(from.sex());
-    }
-    if (from.has_account()) {
-      set_has_account();
-      account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
-    }
+	if (from.has_career()) {
+	  set_career(from.career());
+	}
+	if (from.has_sex()) {
+	  set_sex(from.sex());
+	}
+	if (from.has_account()) {
+	  set_has_account();
+	  account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
+	}
   }
   if (from._internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+	mutable_unknown_fields()->MergeFrom(from.unknown_fields());
   }
 }
 
@@ -552,7 +552,7 @@ void reg::InternalSwap(reg* other) {
  void reg::set_account(const char* value, size_t size) {
   set_has_account();
   account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:MSG.reg.account)
 }
  ::std::string* reg::mutable_account() {
@@ -566,9 +566,9 @@ void reg::InternalSwap(reg* other) {
 }
  void reg::set_allocated_account(::std::string* account) {
   if (account != NULL) {
-    set_has_account();
+	set_has_account();
   } else {
-    clear_has_account();
+	clear_has_account();
   }
   account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
   // @@protoc_insertion_point(field_set_allocated:MSG.reg.account)

@@ -52,16 +52,16 @@ class SizeMessage1 : public ::google::protobuf::Message {
   SizeMessage1(const SizeMessage1& from);
 
   inline SizeMessage1& operator=(const SizeMessage1& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -82,10 +82,10 @@ class SizeMessage1 : public ::google::protobuf::Message {
   void InternalSwap(SizeMessage1* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -200,9 +200,9 @@ class SizeMessage1 : public ::google::protobuf::Message {
   void set_field5(int index, ::google::protobuf::uint64 value);
   void add_field5(::google::protobuf::uint64 value);
   const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-      field5() const;
+	  field5() const;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-      mutable_field5();
+	  mutable_field5();
 
   // optional bool field59 = 59 [default = false];
   bool has_field59() const;
@@ -574,16 +574,16 @@ class SizeMessage1SubMessage : public ::google::protobuf::Message {
   SizeMessage1SubMessage(const SizeMessage1SubMessage& from);
 
   inline SizeMessage1SubMessage& operator=(const SizeMessage1SubMessage& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -604,10 +604,10 @@ class SizeMessage1SubMessage : public ::google::protobuf::Message {
   void InternalSwap(SizeMessage1SubMessage* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -850,16 +850,16 @@ class SizeMessage2_Group1 : public ::google::protobuf::Message {
   SizeMessage2_Group1(const SizeMessage2_Group1& from);
 
   inline SizeMessage2_Group1& operator=(const SizeMessage2_Group1& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -880,10 +880,10 @@ class SizeMessage2_Group1 : public ::google::protobuf::Message {
   void InternalSwap(SizeMessage2_Group1* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -1028,9 +1028,9 @@ class SizeMessage2_Group1 : public ::google::protobuf::Message {
   void set_field73(int index, ::google::protobuf::int32 value);
   void add_field73(::google::protobuf::int32 value);
   const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-      field73() const;
+	  field73() const;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-      mutable_field73();
+	  mutable_field73();
 
   // optional int32 field20 = 20 [default = 0];
   bool has_field20() const;
@@ -1125,16 +1125,16 @@ class SizeMessage2 : public ::google::protobuf::Message {
   SizeMessage2(const SizeMessage2& from);
 
   inline SizeMessage2& operator=(const SizeMessage2& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1155,10 +1155,10 @@ class SizeMessage2 : public ::google::protobuf::Message {
   void InternalSwap(SizeMessage2* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -1347,9 +1347,9 @@ class SizeMessage2 : public ::google::protobuf::Message {
   ::benchmarks::SizeMessage2_Group1* mutable_group1(int index);
   ::benchmarks::SizeMessage2_Group1* add_group1();
   const ::google::protobuf::RepeatedPtrField< ::benchmarks::SizeMessage2_Group1 >&
-      group1() const;
+	  group1() const;
   ::google::protobuf::RepeatedPtrField< ::benchmarks::SizeMessage2_Group1 >*
-      mutable_group1();
+	  mutable_group1();
 
   // repeated string field128 = 128;
   int field128_size() const;
@@ -1405,9 +1405,9 @@ class SizeMessage2 : public ::google::protobuf::Message {
   void set_field130(int index, ::google::protobuf::int64 value);
   void add_field130(::google::protobuf::int64 value);
   const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
-      field130() const;
+	  field130() const;
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
-      mutable_field130();
+	  mutable_field130();
 
   // optional bool field205 = 205 [default = false];
   bool has_field205() const;
@@ -1528,16 +1528,16 @@ class SizeMessage2GroupedMessage : public ::google::protobuf::Message {
   SizeMessage2GroupedMessage(const SizeMessage2GroupedMessage& from);
 
   inline SizeMessage2GroupedMessage& operator=(const SizeMessage2GroupedMessage& from) {
-    CopyFrom(from);
-    return *this;
+	CopyFrom(from);
+	return *this;
   }
 
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
+	return _internal_metadata_.unknown_fields();
   }
 
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
+	return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1558,10 +1558,10 @@ class SizeMessage2GroupedMessage : public ::google::protobuf::Message {
   void InternalSwap(SizeMessage2GroupedMessage* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+	return _internal_metadata_.arena();
   }
   inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+	return _internal_metadata_.raw_arena_ptr();
   }
   public:
 
@@ -1733,7 +1733,7 @@ inline void SizeMessage1::set_field1(const char* value) {
 inline void SizeMessage1::set_field1(const char* value, size_t size) {
   set_has_field1();
   field1_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field1)
 }
 inline ::std::string* SizeMessage1::mutable_field1() {
@@ -1747,9 +1747,9 @@ inline ::std::string* SizeMessage1::release_field1() {
 }
 inline void SizeMessage1::set_allocated_field1(::std::string* field1) {
   if (field1 != NULL) {
-    set_has_field1();
+	set_has_field1();
   } else {
-    clear_has_field1();
+	clear_has_field1();
   }
   field1_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field1);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field1)
@@ -1786,7 +1786,7 @@ inline void SizeMessage1::set_field9(const char* value) {
 inline void SizeMessage1::set_field9(const char* value, size_t size) {
   set_has_field9();
   field9_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field9)
 }
 inline ::std::string* SizeMessage1::mutable_field9() {
@@ -1800,9 +1800,9 @@ inline ::std::string* SizeMessage1::release_field9() {
 }
 inline void SizeMessage1::set_allocated_field9(::std::string* field9) {
   if (field9 != NULL) {
-    set_has_field9();
+	set_has_field9();
   } else {
-    clear_has_field9();
+	clear_has_field9();
   }
   field9_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field9);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field9)
@@ -1839,7 +1839,7 @@ inline void SizeMessage1::set_field18(const char* value) {
 inline void SizeMessage1::set_field18(const char* value, size_t size) {
   set_has_field18();
   field18_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field18)
 }
 inline ::std::string* SizeMessage1::mutable_field18() {
@@ -1853,9 +1853,9 @@ inline ::std::string* SizeMessage1::release_field18() {
 }
 inline void SizeMessage1::set_allocated_field18(::std::string* field18) {
   if (field18 != NULL) {
-    set_has_field18();
+	set_has_field18();
   } else {
-    clear_has_field18();
+	clear_has_field18();
   }
   field18_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field18);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field18)
@@ -2060,7 +2060,7 @@ inline void SizeMessage1::set_field4(const char* value) {
 inline void SizeMessage1::set_field4(const char* value, size_t size) {
   set_has_field4();
   field4_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field4)
 }
 inline ::std::string* SizeMessage1::mutable_field4() {
@@ -2074,9 +2074,9 @@ inline ::std::string* SizeMessage1::release_field4() {
 }
 inline void SizeMessage1::set_allocated_field4(::std::string* field4) {
   if (field4 != NULL) {
-    set_has_field4();
+	set_has_field4();
   } else {
-    clear_has_field4();
+	clear_has_field4();
   }
   field4_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field4);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field4)
@@ -2167,7 +2167,7 @@ inline void SizeMessage1::set_field7(const char* value) {
 inline void SizeMessage1::set_field7(const char* value, size_t size) {
   set_has_field7();
   field7_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field7)
 }
 inline ::std::string* SizeMessage1::mutable_field7() {
@@ -2181,9 +2181,9 @@ inline ::std::string* SizeMessage1::release_field7() {
 }
 inline void SizeMessage1::set_allocated_field7(::std::string* field7) {
   if (field7 != NULL) {
-    set_has_field7();
+	set_has_field7();
   } else {
-    clear_has_field7();
+	clear_has_field7();
   }
   field7_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field7);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field7)
@@ -2436,7 +2436,7 @@ inline void SizeMessage1::set_field102(const char* value) {
 inline void SizeMessage1::set_field102(const char* value, size_t size) {
   set_has_field102();
   field102_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field102)
 }
 inline ::std::string* SizeMessage1::mutable_field102() {
@@ -2450,9 +2450,9 @@ inline ::std::string* SizeMessage1::release_field102() {
 }
 inline void SizeMessage1::set_allocated_field102(::std::string* field102) {
   if (field102 != NULL) {
-    set_has_field102();
+	set_has_field102();
   } else {
-    clear_has_field102();
+	clear_has_field102();
   }
   field102_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field102);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field102)
@@ -2489,7 +2489,7 @@ inline void SizeMessage1::set_field103(const char* value) {
 inline void SizeMessage1::set_field103(const char* value, size_t size) {
   set_has_field103();
   field103_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field103)
 }
 inline ::std::string* SizeMessage1::mutable_field103() {
@@ -2503,9 +2503,9 @@ inline ::std::string* SizeMessage1::release_field103() {
 }
 inline void SizeMessage1::set_allocated_field103(::std::string* field103) {
   if (field103 != NULL) {
-    set_has_field103();
+	set_has_field103();
   } else {
-    clear_has_field103();
+	clear_has_field103();
   }
   field103_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field103);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field103)
@@ -2748,7 +2748,7 @@ inline const ::benchmarks::SizeMessage1SubMessage& SizeMessage1::field15() const
 inline ::benchmarks::SizeMessage1SubMessage* SizeMessage1::mutable_field15() {
   set_has_field15();
   if (field15_ == NULL) {
-    field15_ = new ::benchmarks::SizeMessage1SubMessage;
+	field15_ = new ::benchmarks::SizeMessage1SubMessage;
   }
   // @@protoc_insertion_point(field_mutable:benchmarks.SizeMessage1.field15)
   return field15_;
@@ -2763,9 +2763,9 @@ inline void SizeMessage1::set_allocated_field15(::benchmarks::SizeMessage1SubMes
   delete field15_;
   field15_ = field15;
   if (field15) {
-    set_has_field15();
+	set_has_field15();
   } else {
-    clear_has_field15();
+	clear_has_field15();
   }
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field15)
 }
@@ -2897,7 +2897,7 @@ inline void SizeMessage1::set_field129(const char* value) {
 inline void SizeMessage1::set_field129(const char* value, size_t size) {
   set_has_field129();
   field129_.SetNoArena(_default_field129_,
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1.field129)
 }
 inline ::std::string* SizeMessage1::mutable_field129() {
@@ -2911,9 +2911,9 @@ inline ::std::string* SizeMessage1::release_field129() {
 }
 inline void SizeMessage1::set_allocated_field129(::std::string* field129) {
   if (field129 != NULL) {
-    set_has_field129();
+	set_has_field129();
   } else {
-    clear_has_field129();
+	clear_has_field129();
   }
   field129_.SetAllocatedNoArena(_default_field129_, field129);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1.field129)
@@ -3050,7 +3050,7 @@ inline void SizeMessage1SubMessage::set_field15(const char* value) {
 inline void SizeMessage1SubMessage::set_field15(const char* value, size_t size) {
   set_has_field15();
   field15_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1SubMessage.field15)
 }
 inline ::std::string* SizeMessage1SubMessage::mutable_field15() {
@@ -3064,9 +3064,9 @@ inline ::std::string* SizeMessage1SubMessage::release_field15() {
 }
 inline void SizeMessage1SubMessage::set_allocated_field15(::std::string* field15) {
   if (field15 != NULL) {
-    set_has_field15();
+	set_has_field15();
   } else {
-    clear_has_field15();
+	clear_has_field15();
   }
   field15_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field15);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1SubMessage.field15)
@@ -3415,7 +3415,7 @@ inline void SizeMessage1SubMessage::set_field205(const char* value) {
 inline void SizeMessage1SubMessage::set_field205(const char* value, size_t size) {
   set_has_field205();
   field205_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage1SubMessage.field205)
 }
 inline ::std::string* SizeMessage1SubMessage::mutable_field205() {
@@ -3429,9 +3429,9 @@ inline ::std::string* SizeMessage1SubMessage::release_field205() {
 }
 inline void SizeMessage1SubMessage::set_allocated_field205(::std::string* field205) {
   if (field205 != NULL) {
-    set_has_field205();
+	set_has_field205();
   } else {
-    clear_has_field205();
+	clear_has_field205();
   }
   field205_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field205);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage1SubMessage.field205)
@@ -3568,7 +3568,7 @@ inline void SizeMessage2_Group1::set_field12(const char* value) {
 inline void SizeMessage2_Group1::set_field12(const char* value, size_t size) {
   set_has_field12();
   field12_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field12)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field12() {
@@ -3582,9 +3582,9 @@ inline ::std::string* SizeMessage2_Group1::release_field12() {
 }
 inline void SizeMessage2_Group1::set_allocated_field12(::std::string* field12) {
   if (field12 != NULL) {
-    set_has_field12();
+	set_has_field12();
   } else {
-    clear_has_field12();
+	clear_has_field12();
   }
   field12_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field12);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field12)
@@ -3621,7 +3621,7 @@ inline void SizeMessage2_Group1::set_field13(const char* value) {
 inline void SizeMessage2_Group1::set_field13(const char* value, size_t size) {
   set_has_field13();
   field13_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field13)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field13() {
@@ -3635,9 +3635,9 @@ inline ::std::string* SizeMessage2_Group1::release_field13() {
 }
 inline void SizeMessage2_Group1::set_allocated_field13(::std::string* field13) {
   if (field13 != NULL) {
-    set_has_field13();
+	set_has_field13();
   } else {
-    clear_has_field13();
+	clear_has_field13();
   }
   field13_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field13);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field13)
@@ -3668,7 +3668,7 @@ inline void SizeMessage2_Group1::set_field14(int index, const char* value) {
 }
 inline void SizeMessage2_Group1::set_field14(int index, const char* value, size_t size) {
   field14_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
+	reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field14)
 }
 inline ::std::string* SizeMessage2_Group1::add_field14() {
@@ -3776,7 +3776,7 @@ inline void SizeMessage2_Group1::set_field27(const char* value) {
 inline void SizeMessage2_Group1::set_field27(const char* value, size_t size) {
   set_has_field27();
   field27_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field27)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field27() {
@@ -3790,9 +3790,9 @@ inline ::std::string* SizeMessage2_Group1::release_field27() {
 }
 inline void SizeMessage2_Group1::set_allocated_field27(::std::string* field27) {
   if (field27 != NULL) {
-    set_has_field27();
+	set_has_field27();
   } else {
-    clear_has_field27();
+	clear_has_field27();
   }
   field27_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field27);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field27)
@@ -3853,7 +3853,7 @@ inline void SizeMessage2_Group1::set_field29(const char* value) {
 inline void SizeMessage2_Group1::set_field29(const char* value, size_t size) {
   set_has_field29();
   field29_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field29)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field29() {
@@ -3867,9 +3867,9 @@ inline ::std::string* SizeMessage2_Group1::release_field29() {
 }
 inline void SizeMessage2_Group1::set_allocated_field29(::std::string* field29) {
   if (field29 != NULL) {
-    set_has_field29();
+	set_has_field29();
   } else {
-    clear_has_field29();
+	clear_has_field29();
   }
   field29_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field29);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field29)
@@ -3906,7 +3906,7 @@ inline void SizeMessage2_Group1::set_field16(const char* value) {
 inline void SizeMessage2_Group1::set_field16(const char* value, size_t size) {
   set_has_field16();
   field16_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field16)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field16() {
@@ -3920,9 +3920,9 @@ inline ::std::string* SizeMessage2_Group1::release_field16() {
 }
 inline void SizeMessage2_Group1::set_allocated_field16(::std::string* field16) {
   if (field16 != NULL) {
-    set_has_field16();
+	set_has_field16();
   } else {
-    clear_has_field16();
+	clear_has_field16();
   }
   field16_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field16);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field16)
@@ -3953,7 +3953,7 @@ inline void SizeMessage2_Group1::set_field22(int index, const char* value) {
 }
 inline void SizeMessage2_Group1::set_field22(int index, const char* value, size_t size) {
   field22_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
+	reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field22)
 }
 inline ::std::string* SizeMessage2_Group1::add_field22() {
@@ -4067,7 +4067,7 @@ inline void SizeMessage2_Group1::set_field24(const char* value) {
 inline void SizeMessage2_Group1::set_field24(const char* value, size_t size) {
   set_has_field24();
   field24_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.Group1.field24)
 }
 inline ::std::string* SizeMessage2_Group1::mutable_field24() {
@@ -4081,9 +4081,9 @@ inline ::std::string* SizeMessage2_Group1::release_field24() {
 }
 inline void SizeMessage2_Group1::set_allocated_field24(::std::string* field24) {
   if (field24 != NULL) {
-    set_has_field24();
+	set_has_field24();
   } else {
-    clear_has_field24();
+	clear_has_field24();
   }
   field24_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field24);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field24)
@@ -4110,7 +4110,7 @@ inline const ::benchmarks::SizeMessage2GroupedMessage& SizeMessage2_Group1::fiel
 inline ::benchmarks::SizeMessage2GroupedMessage* SizeMessage2_Group1::mutable_field31() {
   set_has_field31();
   if (field31_ == NULL) {
-    field31_ = new ::benchmarks::SizeMessage2GroupedMessage;
+	field31_ = new ::benchmarks::SizeMessage2GroupedMessage;
   }
   // @@protoc_insertion_point(field_mutable:benchmarks.SizeMessage2.Group1.field31)
   return field31_;
@@ -4125,9 +4125,9 @@ inline void SizeMessage2_Group1::set_allocated_field31(::benchmarks::SizeMessage
   delete field31_;
   field31_ = field31;
   if (field31) {
-    set_has_field31();
+	set_has_field31();
   } else {
-    clear_has_field31();
+	clear_has_field31();
   }
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.Group1.field31)
 }
@@ -4167,7 +4167,7 @@ inline void SizeMessage2::set_field1(const char* value) {
 inline void SizeMessage2::set_field1(const char* value, size_t size) {
   set_has_field1();
   field1_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.field1)
 }
 inline ::std::string* SizeMessage2::mutable_field1() {
@@ -4181,9 +4181,9 @@ inline ::std::string* SizeMessage2::release_field1() {
 }
 inline void SizeMessage2::set_allocated_field1(::std::string* field1) {
   if (field1 != NULL) {
-    set_has_field1();
+	set_has_field1();
   } else {
-    clear_has_field1();
+	clear_has_field1();
   }
   field1_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field1);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.field1)
@@ -4316,7 +4316,7 @@ inline void SizeMessage2::set_field6(const char* value) {
 inline void SizeMessage2::set_field6(const char* value, size_t size) {
   set_has_field6();
   field6_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.field6)
 }
 inline ::std::string* SizeMessage2::mutable_field6() {
@@ -4330,9 +4330,9 @@ inline ::std::string* SizeMessage2::release_field6() {
 }
 inline void SizeMessage2::set_allocated_field6(::std::string* field6) {
   if (field6 != NULL) {
-    set_has_field6();
+	set_has_field6();
   } else {
-    clear_has_field6();
+	clear_has_field6();
   }
   field6_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field6);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.field6)
@@ -4369,7 +4369,7 @@ inline void SizeMessage2::set_field2(const char* value) {
 inline void SizeMessage2::set_field2(const void* value, size_t size) {
   set_has_field2();
   field2_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
+	  ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.field2)
 }
 inline ::std::string* SizeMessage2::mutable_field2() {
@@ -4383,9 +4383,9 @@ inline ::std::string* SizeMessage2::release_field2() {
 }
 inline void SizeMessage2::set_allocated_field2(::std::string* field2) {
   if (field2 != NULL) {
-    set_has_field2();
+	set_has_field2();
   } else {
-    clear_has_field2();
+	clear_has_field2();
   }
   field2_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), field2);
   // @@protoc_insertion_point(field_set_allocated:benchmarks.SizeMessage2.field2)
@@ -4806,7 +4806,7 @@ inline void SizeMessage2::set_field128(int index, const char* value) {
 }
 inline void SizeMessage2::set_field128(int index, const char* value, size_t size) {
   field128_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
+	reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.field128)
 }
 inline ::std::string* SizeMessage2::add_field128() {
@@ -4884,7 +4884,7 @@ inline void SizeMessage2::set_field127(int index, const char* value) {
 }
 inline void SizeMessage2::set_field127(int index, const char* value, size_t size) {
   field127_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
+	reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:benchmarks.SizeMessage2.field127)
 }
 inline ::std::string* SizeMessage2::add_field127() {

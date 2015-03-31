@@ -2,7 +2,7 @@ syntax = "proto2";
 package MSG;
 message reg
 {
-    required int32 career = 1;
-    required int32 sex = 2;
-    required string account = 3;
+	required int32 career = 1;
+	required int32 sex = 2;
+	required string account = 3;
 }

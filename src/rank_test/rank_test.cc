@@ -2,7 +2,7 @@
  * rank_test.cpp
  *
  *  Created on: Nov 7, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include "Pre_Header.h"
@@ -17,26 +17,26 @@ const uint32_t DIVISOR = 1000000 / BUCKET_NUMS;					// 每XX战力分一个桶
 const uint32_t MAX_ARRAY_INDEX = BUCKET_NUMS;
 const uint32_t ARRAY_SIZE = MAX_ARRAY_INDEX + 1;
 
-uint32_t hash_func(uint32_t power) {    // 哈希函数，不使用标准库的unordered_map，通过hash_func保证不冲突，使用数组，INDEX有排序的含义
-    if (power > MAX_POWER_HASHER) {
-        return MAX_ARRAY_INDEX;
-    }
-    return power / DIVISOR;
+uint32_t hash_func(uint32_t power) {	// 哈希函数，不使用标准库的unordered_map，通过hash_func保证不冲突，使用数组，INDEX有排序的含义
+	if (power > MAX_POWER_HASHER) {
+		return MAX_ARRAY_INDEX;
+	}
+	return power / DIVISOR;
 }
 
 // 榜单存储的玩家信息
 struct Player_Info {
 	Player_Info(uint64_t role_id_, uint32_t power_) : role_id(role_id_), power(power_), new_power(0) {}
 	Player_Info(void) : Player_Info(0, 0) {}
-    uint64_t role_id;    	// role_id
-    uint32_t power;			// 战力
-    uint32_t new_power;		// 临时存储随机增加的新战力
+	uint64_t role_id;		// role_id
+	uint32_t power;			// 战力
+	uint32_t new_power;		// 临时存储随机增加的新战力
 };
 
 struct Bucket_Info {
-    typedef std::list<Player_Info> Player_Info_List;
-    Player_Info_List player_list;				// 玩家信息列表，按战力排序
-    uint32_t prev_nums;							// 此桶前面的玩家数
+	typedef std::list<Player_Info> Player_Info_List;
+	Player_Info_List player_list;				// 玩家信息列表，按战力排序
+	uint32_t prev_nums;							// 此桶前面的玩家数
 };
 
 typedef std::array<Bucket_Info, ARRAY_SIZE> Charts;
@@ -126,9 +126,9 @@ int main()
 	init_charts(charts, player_info);
 	rec_log(Log::LVL_INFO, "init complete with %d player", MAX_PLAYER);
 	rec_log(Log::LVL_INFO, "input num to test, other to exit");
-    uint32_t opt;
+	uint32_t opt;
 	while (std::cin>>opt) {
-    	std::unordered_map<uint64_t, Player_Info> change_player;
+		std::unordered_map<uint64_t, Player_Info> change_player;
 		for (uint64_t i = 0; i < 100000; ++i) {
 			uint32_t index = rand() % MAX_PLAYER;
 			if (change_player.count(player_info[index].role_id) == 0) {
@@ -141,16 +141,16 @@ int main()
 			}
 		}
 		rec_log(Log::LVL_INFO, "changed player nums : %d", change_player.size());
-    	{
-    		Time_Test tester("player power change");
-    		for (auto it = change_player.begin(); it != change_player.end(); ++it) {
-    			chg_charts(it->first, it->second.power, it->second.new_power, charts);
-    		}
-    	}
-    }
+		{
+			Time_Test tester("player power change");
+			for (auto it = change_player.begin(); it != change_player.end(); ++it) {
+				chg_charts(it->first, it->second.power, it->second.new_power, charts);
+			}
+		}
+	}
 
 	// 查看排行榜情况 输出的内容很长，在验证正确性的时候取消注释
-    // output_charts(charts);
+	// output_charts(charts);
 	return 0;
 }
 

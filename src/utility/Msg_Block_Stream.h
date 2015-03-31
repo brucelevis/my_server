@@ -2,7 +2,7 @@
  * Msg_Block_Stream.h
  *
  *  Created on: Jun 28, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #ifndef MSG_BLOCK_STREAM_H_

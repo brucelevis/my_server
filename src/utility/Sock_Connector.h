@@ -2,7 +2,7 @@
  * Sock_Connector.h
  *
  *  Created on: Apr 21, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #ifndef SOCK_CONNECTOR_H_

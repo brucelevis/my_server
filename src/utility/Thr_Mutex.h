@@ -2,7 +2,7 @@
  * Thr_Mutex.h
  *
  *  Created on: Jan 14, 2014
- *      Author: "enjolras@163.com"
+ *	  Author: "enjolras@163.com"
  */
 
 #ifndef THR_MUTEX_H_

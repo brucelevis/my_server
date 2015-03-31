@@ -2,7 +2,7 @@
  * Copy_Control.h
  *
  *  Created on: Jan 15, 2014
- *      Author: "enjolras@163.com"
+ *	  Author: "enjolras@163.com"
  */
 
 #ifndef COPY_CONTROL_H_

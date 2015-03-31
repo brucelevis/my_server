@@ -2,7 +2,7 @@
  * Singleton.h
  *
  *  Created on: Jan 6, 2014
- *      Author: "enjolras@163.com"
+ *	  Author: "enjolras@163.com"
  */
 
 #ifndef SINGLETON_H_

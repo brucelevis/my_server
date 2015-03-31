@@ -2,8 +2,8 @@
  * Aoi.h
  *
  *  Created on: Oct 20, 2014
- *      Author: "enjolras"
- *      只负责 aoi 计算 是否可走的判定，建议放在场景中，obj id在地图进程中，由专门的生成器生成
+ *	  Author: "enjolras"
+ *	  只负责 aoi 计算 是否可走的判定，建议放在场景中，obj id在地图进程中，由专门的生成器生成
  */
 
 #ifndef AOI_H_

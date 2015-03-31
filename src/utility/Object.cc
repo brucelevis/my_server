@@ -2,7 +2,7 @@
  * Object.cpp
  *
  *  Created on: Oct 20, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include <Object.h>

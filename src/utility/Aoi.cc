@@ -2,7 +2,7 @@
  * Aoi.cpp
  *
  *  Created on: Oct 20, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include <Aoi.h>

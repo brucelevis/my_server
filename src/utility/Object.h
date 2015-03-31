@@ -2,7 +2,7 @@
  * Object.h
  *
  *  Created on: Oct 20, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #ifndef OBJECT_H_

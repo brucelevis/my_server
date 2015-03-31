@@ -2,7 +2,7 @@
  * proto_benchmark_main.cc
  *
  *  Created on: Mar 22, 2015
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include <sys/time.h>
@@ -154,19 +154,19 @@ error:
 }
 
 int main(int argc, char* argv[]) {
-    GOOGLE_PROTOBUF_VERIFY_VERSION;
-    if (argc != 3) {
-        cerr << "Usage: " << argv[0] << " <message_dat_file1> <message_dat_file2>" << endl;
-        return -1;
-    }
+	GOOGLE_PROTOBUF_VERIFY_VERSION;
+	if (argc != 3) {
+		cerr << "Usage: " << argv[0] << " <message_dat_file1> <message_dat_file2>" << endl;
+		return -1;
+	}
 
-    int ret = 0;
+	int ret = 0;
 
-    ret |= run_test<benchmarks::SpeedMessage1>(argv[1], "speed1 ");
-    ret |= run_test<benchmarks::SizeMessage1>(argv[1], "size1 ");
+	ret |= run_test<benchmarks::SpeedMessage1>(argv[1], "speed1 ");
+	ret |= run_test<benchmarks::SizeMessage1>(argv[1], "size1 ");
 
-    ret |= run_test<benchmarks::SpeedMessage2>(argv[2], "speed2 ");
-    ret |= run_test<benchmarks::SizeMessage2>(argv[2], "size2 ");
+	ret |= run_test<benchmarks::SpeedMessage2>(argv[2], "speed2 ");
+	ret |= run_test<benchmarks::SizeMessage2>(argv[2], "size2 ");
 
-    return ret;
+	return ret;
 }

@@ -2,7 +2,7 @@
  * timer_test_main.cc
  *
  *  Created on: Dec 13, 2014
- *      Author: "enjolras"
+ *	  Author: "enjolras"
  */
 
 #include "Timer.h"
